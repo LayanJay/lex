@@ -16,3 +16,6 @@ yarn.lock
 
 # macOS
 .DS_Store
+
+tailwind.json
+tailwind.css
