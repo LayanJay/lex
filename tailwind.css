@@ -1,6 +1,119 @@
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem
+.absolute {
+  position: absolute
+}
+
+.relative {
+  position: relative
+}
+
+.bottom-0 {
+  bottom: 0px
+}
+
+.left-0 {
+  left: 0px
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem
+}
+
+.flex {
+  display: flex
+}
+
+.h-4 {
+  height: 1rem
+}
+
+.h-12 {
+  height: 3rem
+}
+
+.h-screen {
+  height: 100vh
+}
+
+.w-3\/4 {
+  width: 75%
+}
+
+.w-full {
+  width: 100%
+}
+
+.w-5\/6 {
+  width: 83.333333%
+}
+
+.w-4\/5 {
+  width: 80%
+}
+
+.w-4 {
+  width: 1rem
+}
+
+.w-12 {
+  width: 3rem
+}
+
+.w-fit {
+  width: fit-content
+}
+
+.flex-row {
+  flex-direction: row
+}
+
+.items-center {
+  align-items: center
+}
+
+.justify-center {
+  justify-content: center
+}
+
+.justify-around {
+  justify-content: space-around
+}
+
+.rounded {
+  border-radius: 0.25rem
+}
+
+.rounded-full {
+  border-radius: 9999px
+}
+
+.bg-grey-lighter {
+  --tw-bg-opacity: 1;
+  background-color: rgb(233 233 233 / var(--tw-bg-opacity))
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 30 30 / var(--tw-bg-opacity))
+}
+
+.p-4 {
+  padding: 1rem
+}
+
+.p-16 {
+  padding: 4rem
+}
+
+.p-12 {
+  padding: 3rem
+}
+
+.p-8 {
+  padding: 2rem
+}
+
+.p-6 {
+  padding: 1.5rem
 }
 
 .py-4 {
@@ -11,4 +124,49 @@
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem
+}
+
+.pr-4 {
+  padding-right: 1rem
+}
+
+.pt-1 {
+  padding-top: 0.25rem
+}
+
+.pr-6 {
+  padding-right: 1.5rem
+}
+
+.pl-1 {
+  padding-left: 0.25rem
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem
 }
