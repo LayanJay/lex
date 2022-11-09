@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import { useTailwind } from "tailwind-rn";
 
+
 const HomeScreen = () => {
   const tailwind = useTailwind();
 
