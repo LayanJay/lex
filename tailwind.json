@@ -1,85 +1,95 @@
 {
-	"mb-6": {
-		"style": {
-			"marginBottom": 24
-		}
-	},
-	"flex": {
-		"style": {
-			"display": "flex"
-		}
-	},
-	"h-full": {
-		"style": {
-			"height": "100%"
-		}
-	},
-	"items-center": {
-		"style": {
-			"alignItems": "center"
-		}
-	},
-	"justify-center": {
-		"style": {
-			"justifyContent": "center"
-		}
-	},
-	"bg-white": {
-		"style": {
-			"--tw-bg-opacity": 1,
-			"backgroundColor": "rgb(255 255 255 / var(--tw-bg-opacity))"
-		}
-	},
-	"py-8": {
-		"style": {
-			"paddingTop": 32,
-			"paddingBottom": 32
-		}
-	},
-	"py-4": {
-		"style": {
-			"paddingTop": 16,
-			"paddingBottom": 16
-		}
-	},
-	"px-2": {
-		"style": {
-			"paddingLeft": 8,
-			"paddingRight": 8
-		}
-	},
-	"px-4": {
-		"style": {
-			"paddingLeft": 16,
-			"paddingRight": 16
-		}
-	},
-	"font-primary-600": {
-		"style": {
-			"fontFamily": "PlayfairDisplay_600SemiBold"
-		}
-	},
-	"text-4xl": {
-		"style": {
-			"fontSize": 36,
-			"lineHeight": 40
-		}
-	},
-	"text-5xl": {
-		"style": {
-			"fontSize": 48,
-			"lineHeight": 1
-		}
-	},
-	"text-6xl": {
-		"style": {
-			"fontSize": 60,
-			"lineHeight": 1
-		}
-	},
-	"font-semibold": {
-		"style": {
-			"fontWeight": "600"
-		}
-	}
+  "mb-6": {
+    "style": {
+      "marginBottom": 24
+    }
+  },
+  "flex": {
+    "style": {
+      "display": "flex"
+    }
+  },
+  "h-full": {
+    "style": {
+      "height": "100%"
+    }
+  },
+  "items-center": {
+    "style": {
+      "alignItems": "center"
+    }
+  },
+  "justify-center": {
+    "style": {
+      "justifyContent": "center"
+    }
+  },
+  "bg-white": {
+    "style": {
+      "--tw-bg-opacity": 1,
+      "backgroundColor": "rgb(255 255 255 / var(--tw-bg-opacity))"
+    }
+  },
+  "py-8": {
+    "style": {
+      "paddingTop": 32,
+      "paddingRight": 32,
+      "paddingBottom": 32,
+      "paddingLeft": 32
+    }
+  },
+  "p-6": {
+    "style": {
+      "paddingTop": 24,
+      "paddingRight": 24,
+      "paddingBottom": 24,
+      "paddingLeft": 24
+    }
+  },
+  "py-4": {
+    "style": {
+      "paddingTop": 16,
+      "paddingBottom": 16
+    }
+  },
+  "px-2": {
+    "style": {
+      "paddingLeft": 8,
+      "paddingRight": 8
+    }
+  },
+  "px-4": {
+    "style": {
+      "paddingLeft": 16,
+      "paddingRight": 16
+    }
+  },
+  "font-primary-600": {
+    "style": {
+      "fontFamily": "PlayfairDisplay_600SemiBold"
+    }
+  },
+  "text-4xl": {
+    "style": {
+      "fontSize": 36,
+      "lineHeight": 40
+    }
+  },
+  "text-5xl": {
+    "style": {
+      "fontSize": 48,
+      "lineHeight": 1
+    }
+  },
+  "text-6xl": {
+    "style": {
+      "fontSize": 60,
+      "lineHeight": 1
+    }
+  },
+  "font-semibold": {
+    "style": {
+      "fontWeight": "600"
+    }
+  }
 }
