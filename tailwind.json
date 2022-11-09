@@ -5,10 +5,10 @@
 			"paddingBottom": 32
 		}
 	},
-	"py-2": {
+	"py-4": {
 		"style": {
-			"paddingTop": 8,
-			"paddingBottom": 8
+			"paddingTop": 16,
+			"paddingBottom": 16
 		}
 	},
 	"px-2": {
