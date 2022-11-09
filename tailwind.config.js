@@ -1,8 +1,12 @@
 module.exports = {
-  content: ["./screens/**/*.{js,jsx,ts,tsx}"],
+  content: ['./screens/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'primary-600': ['PlayfairDisplay_600SemiBold'],
+      },
+    },
   },
   plugins: [],
-  corePlugins: require("tailwind-rn/unsupported-core-plugins"),
-};
+  corePlugins: require('tailwind-rn/unsupported-core-plugins'),
+}
