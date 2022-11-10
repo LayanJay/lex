@@ -4,6 +4,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { QuestionType } from "../types";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import React from "react";
 
 dayjs.extend(relativeTime);
 type Props = {

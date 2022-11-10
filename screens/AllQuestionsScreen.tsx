@@ -6,6 +6,7 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
 import { Ionicons } from "@expo/vector-icons";
+import React from "react";
 
 const AllQuestionsScreen = ({ navigation }: any) => {
   const tailwind = useTailwind();
