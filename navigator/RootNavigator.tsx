@@ -28,10 +28,16 @@ const RootNavigator = () => {
     <RootStack.Navigator>
       <RootStack.Group>
         <RootStack.Screen name="Main" component={TabNavigator} />
-        <RootStack.Screen name="AddQuestion" component={AddQuestionScreen} />
-        <RootStack.Screen name="Sign In" component={SignIn} />
-        <RootStack.Screen name="ViewPoll" component={ViewPollScreen} />
-        <RootStack.Screen name="Create Poll" component={CreatePollScreen} />
+        <RootStack.Screen
+          name="ViewPoll"
+          component={ViewPollScreen}
+          options={{ title: "View Poll" }}
+        />
+        <RootStack.Screen
+          name="Create Poll"
+          component={CreatePollScreen}
+          options={{ title: "Create Poll" }}
+        />
         <RootStack.Screen
           name="AddQuestion"
           component={AddQuestionScreen}
