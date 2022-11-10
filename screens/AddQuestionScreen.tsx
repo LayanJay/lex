@@ -40,6 +40,7 @@ const AddQuestionScreen = ({ navigation }: Props) => {
       upvotes: [],
       createdBy: user,
       createdAt: serverTimestamp(),
+      isAnswered: false,
     };
     reset();
     await createQuestion(question);
