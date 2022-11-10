@@ -6,6 +6,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ListPollsScreen from "../screens/ListPollsScreen";
 import LawyerDashboardScreen from "../screens/LawyerDashboardScreen";
 import AdminDashboardScreen from "../screens/AdminDashboardScreen";
+import UserDashboardScreen from "../screens/UserDashboardScreen";
 import React from "react";
 
 export type TabStackParamList = {
@@ -32,7 +33,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Polls" component={ListPollsScreen} />
       <Tab.Screen name="Forum" component={AllQuestionsScreen} />
-      <Tab.Screen name="Lawyer" component={AdminDashboardScreen} />
+      <Tab.Screen name="Lawyer" component={UserDashboardScreen} />
       {/* Add the other tabs here */}
     </Tab.Navigator>
   );

@@ -5,13 +5,14 @@ import { useTailwind } from 'tailwind-rn/dist';
 type Props = {
     type: string;
     number: number;
+    p: any;
 }
 
-const DataCard = ({type, number}: Props) => {
+const DataCard = ({type, number, p}: Props) => {
      const tailwind = useTailwind();
   return (
     <View style={tailwind("bg-gray-300 rounded-md border-2 border-black")}>
-                    <View style={tailwind("p-8")}>
+                    <View style={tailwind(`${p}`)}>
                             <Text style={tailwind("font-light text-xs flex flex-row self-center")}>
                             {type}
                         </Text>

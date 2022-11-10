@@ -7,6 +7,7 @@ import { collection, getDocs, onSnapshot, query, where } from "firebase/firestor
 import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
 import QuestionCard from "../components/QuestionCard";
+import DashboardInfo from "../components/DashboardInfo";
 
 const AnalystDashboardScreen = () => {
     const [answers, setAnswers] = useState<any[]>();
@@ -32,19 +33,7 @@ const AnalystDashboardScreen = () => {
 
     return (
         <View style={tailwind("p-4")}>
-            <View style={tailwind("flex flex-row justify-between")}>
-                <View>
-                    <Text style={tailwind("text-2xl font-semibold")}>Dashboard</Text>
-                    <Text style={tailwind("text-lg text-gray-400")}>Neethi Wikurthisinghe</Text>
-                    <View style={tailwind("bg-gray-400 flex flex-row justify-center")}>
-                        <Text style={tailwind("text-xs font-light ")}>Analyst</Text>
-                    </View>
-                </View>
-                <View>
-                    <Text>Image</Text>
-                </View>
-                
-            </View>
+           <DashboardInfo firstname="Saul" lastname="Goodman" role="Analyst"/>
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
                 <DataCard type="Polls created" number={23}/>
                 <DataCard type="Active Polls" number={23}/>

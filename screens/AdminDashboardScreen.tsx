@@ -7,44 +7,48 @@ import { collection, getDocs, onSnapshot, query, where } from "firebase/firestor
 import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
 import QuestionCard from "../components/QuestionCard";
+import LawyerCard from "../components/LawyerCard";
+import DashboardInfo from "../components/DashboardInfo";
 
 const AdminDashboardScreen = () => {
-    const [answers, setAnswers] = useState<any[]>();
-    const [questions, setQuestions] = useState<QuestionType[]>();
+    const [notApprovedLawyers, setNotApprovedLawyers] = useState<any[]>();
+    const [approvedLawyers, setApprovedLawyers] = useState<any[]>();
     const [limit, setLimit] = useState<number>(3)
 
     useEffect(() => {
-    const getQuestionData = async () => {
-    const ref = collection(db, "questions");
-    const q = query(ref, where("answeredBy", "==", "7JwLj0rwO1uIkBg5lBZi"))
-    let data: QuestionType[] = [];
+    const getApprovedLawyerData = async () => {
+    const ref = collection(db, "user");
+    const q = query(ref, where("role", "==", "lawyer"), where("approved", "==", true))
+    let data: any[] = [];
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
-        data.push({ id: doc.id, ...doc.data() } as QuestionType);
+        data.push({ id: doc.id, ...doc.data() })
       });
-      setQuestions(data);
+      setApprovedLawyers(data);
     }
-    getQuestionData()
+    const getNotApprovedLawyerData = async () => {
+    const ref = collection(db, "user");
+    const q = query(ref, where("role", "==", "lawyer"), where("approved", "==", false))
+    let data: any[] = [];
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      setNotApprovedLawyers(data);
+    }
+    getApprovedLawyerData()
+    getNotApprovedLawyerData()
     
   }, []);
+
+  console.log("appr", approvedLawyers)
 
     const tailwind = useTailwind();
 
     return (
         <View style={tailwind("p-4")}>
-            <View style={tailwind("flex flex-row justify-between")}>
-                <View>
-                    <Text style={tailwind("text-2xl font-semibold")}>Dashboard</Text>
-                    <Text style={tailwind("text-lg text-gray-400")}>Ravi Adminrathne</Text>
-                    <View style={tailwind("bg-gray-400 flex flex-row justify-center")}>
-                        <Text style={tailwind("text-xs font-light ")}>Admin</Text>
-                    </View>
-                </View>
-                <View>
-                    <Text>Image</Text>
-                </View>
-                
-            </View>
+            <DashboardInfo role='Admin' firstname="Ravi" lastname="Adminrathne"/>
+            
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
                 <DataCard type="Total users" number={23}/>
                 <DataCard type="Analysts" number={23}/>
@@ -57,12 +61,12 @@ const AdminDashboardScreen = () => {
                 </View>
                 
                     <ScrollView>
-        {questions &&
-          questions.slice(0, limit).map((question) => (
-            <QuestionCard key={question.id} data={question} />
+        {approvedLawyers &&
+          approvedLawyers.slice(0, limit).map((lawyer) => (
+            <LawyerCard key={lawyer.id} data={lawyer} />
           ))}
       </ScrollView>
-      {questions && questions?.length > limit ? (
+      {approvedLawyers && approvedLawyers?.length > limit ? (
         <View style={tailwind("pt-2 flex flex-row justify-center")}>
             {limit != 3 ? (
                  <Text onPress={() => setLimit(3)} style={tailwind("font-semibold text-sm")}>
@@ -83,9 +87,9 @@ const AdminDashboardScreen = () => {
                 </View>
                 
                     <ScrollView>
-        {questions &&
-          questions.map((question) => (
-            <QuestionCard key={question.id} data={question} />
+        {notApprovedLawyers &&
+          notApprovedLawyers.map((lawyer) => (
+            <LawyerCard key={lawyer.id} data={lawyer} />
           ))}
       </ScrollView>
                 
