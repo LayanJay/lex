@@ -1,19 +1,20 @@
-import React from "react";
-import { View, Text, TextInput } from "react-native";
-import { Style, useTailwind } from "tailwind-rn";
-import { Controller, Control, RegisterOptions } from "react-hook-form";
+import React from 'react'
+import { View, Text, TextInput } from 'react-native'
+import { Style, useTailwind } from 'tailwind-rn'
+import { Controller, Control, RegisterOptions } from 'react-hook-form'
 
 interface Props {
-  label: string;
-  name: string;
-  control: Control;
-  style?: Style;
-  inputStyle?: Style;
-  labelStyle?: Style;
-  errors: any;
-  registerOptions?: RegisterOptions;
-  placeholder: string;
-  multiline?: boolean;
+  label: string
+  name: string
+  control: Control
+  style?: Style
+  inputStyle?: Style
+  labelStyle?: Style
+  errors: any
+  registerOptions?: RegisterOptions
+  placeholder: string
+  multiline?: boolean
+  secureTextEntry?: boolean
 }
 
 const Input = ({
@@ -27,10 +28,11 @@ const Input = ({
   placeholder,
   labelStyle,
   multiline = false,
+  secureTextEntry = false,
 }: Props) => {
-  const tailwind = useTailwind();
+  const tailwind = useTailwind()
   return (
-    <View>
+    <View style={tailwind('relative')}>
       {label && <Text style={labelStyle}>{label}</Text>}
       <View style={style}>
         <Controller
@@ -38,6 +40,7 @@ const Input = ({
           rules={registerOptions}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
+              secureTextEntry={secureTextEntry}
               placeholder={placeholder}
               style={inputStyle}
               onBlur={onBlur}
@@ -49,15 +52,15 @@ const Input = ({
           name={name}
         />
       </View>
-      <View style={tailwind("w-full flex flex-row justify-end pt-0.5")}>
+      <View style={tailwind('absolute bottom-0 right-0')}>
         {errors[name] && errors[name].message ? (
-          <Text style={tailwind("text-xs text-red-500")}>
+          <Text style={tailwind('text-xs text-red-500')}>
             {errors[name].message}
           </Text>
         ) : null}
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default Input;
+export default Input
