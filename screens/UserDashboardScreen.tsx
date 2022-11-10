@@ -7,6 +7,7 @@ import { collection, getDocs, onSnapshot, query, where } from "firebase/firestor
 import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
 import QuestionCard from "../components/QuestionCard";
+import DashboardInfo from "../components/DashboardInfo";
 
 const UserDashboardScreen = () => {
     const [answers, setAnswers] = useState<any[]>();
@@ -16,7 +17,7 @@ const UserDashboardScreen = () => {
     useEffect(() => {
     const getQuestionData = async () => {
     const ref = collection(db, "questions");
-    const q = query(ref, where("answeredBy", "==", "7JwLj0rwO1uIkBg5lBZi"))
+    const q = query(ref, where("createdBy", "==", "7JwLj0rwO1uIkBg5lBZi"))
     let data: QuestionType[] = [];
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
@@ -32,23 +33,12 @@ const UserDashboardScreen = () => {
 
     return (
         <View style={tailwind("p-4")}>
-            <View style={tailwind("flex flex-row justify-between")}>
-                <View>
-                    <Text style={tailwind("text-2xl font-semibold")}>Dashboard</Text>
-                    <Text style={tailwind("text-lg text-gray-400")}>Neethi Wikurthisinghe</Text>
-                    <View style={tailwind("bg-gray-400 flex flex-row justify-center")}>
-                        <Text style={tailwind("text-xs font-light ")}>User</Text>
-                    </View>
-                </View>
-                <View>
-                    <Text>Image</Text>
-                </View>
-                
-            </View>
+            <DashboardInfo firstname="Saul" lastname="Goodman" role="User"/>
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
-                <DataCard type="Questions" number={23}/>
-                <DataCard type="Answered" number={23}/>
-                <DataCard type="Unanswered" number={23}/>
+                {questions && questions?.length ?  <DataCard type="Questions" number={questions?.length} p={`p-6`}/> : <DataCard type="Questions" number={0} p={`p-6`}/>}
+               
+                <DataCard type="Answered" number={23} p={`p-6`}/>
+                <DataCard type="Unanswered" number={23} p={`p-6`}/>
             </View>
             <View style={tailwind("mt-14")}>
                 <View>
