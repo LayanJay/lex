@@ -9,9 +9,11 @@ interface Props {
   control: Control;
   style?: Style;
   inputStyle?: Style;
+  labelStyle?: Style;
   errors: any;
   registerOptions?: RegisterOptions;
   placeholder: string;
+  multiline?: boolean;
 }
 
 const Input = ({
@@ -23,12 +25,14 @@ const Input = ({
   errors,
   registerOptions,
   placeholder,
+  labelStyle,
+  multiline = false,
 }: Props) => {
   const tailwind = useTailwind();
   return (
     <View>
+      {label && <Text style={labelStyle}>{label}</Text>}
       <View style={style}>
-        {label && <Text>{label}</Text>}
         <Controller
           control={control}
           rules={registerOptions}
@@ -39,6 +43,7 @@ const Input = ({
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              multiline
             />
           )}
           name={name}

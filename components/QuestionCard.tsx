@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigator/RootNavigator";
 
-
 dayjs.extend(relativeTime);
 
 type QuestionScreenNavigationProp = StackNavigationProp<
@@ -47,11 +46,12 @@ const QuestionCard = ({ data, navigation }: Props) => {
         <AntDesign name={voted ? "like1" : "like2"} size={24} color="black" />
         <Text style={tailwind("text-xs pt-1")}> {upvotes.length}</Text>
       </View>
-      <Text style={tailwind("w-3/4")}>{title}</Text>
-
-      <Text style={tailwind("px-1 text-xs ")}>
-        {dayjs(createdAt.toDate()).format("mm")} min
-      </Text>
+      <Text style={tailwind("w-3/4 px-2")}>{title}</Text>
+      {createdAt && (
+        <Text style={tailwind(" text-xs ")}>
+          {dayjs(createdAt.toDate()).format("mm")} min
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

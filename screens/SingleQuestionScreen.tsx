@@ -20,7 +20,11 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import AnswerCard from "../components/AnswerCard";
-import { addAnswer, updateUpvote } from "../lib/mutations/questions";
+import {
+  addAnswer,
+  updateIsQuestionAnswered,
+  updateUpvote,
+} from "../lib/mutations/questions";
 import dayjs from "dayjs";
 
 type QuestionScreenNavigationProp = StackNavigationProp<
@@ -98,6 +102,7 @@ const SingleQuestionScreen = ({ route }: Props) => {
       reply: "",
     });
     await addAnswer(answer);
+    await updateIsQuestionAnswered(questionId, true);
   };
 
   const handleUpdateVote = async (
@@ -121,7 +126,7 @@ const SingleQuestionScreen = ({ route }: Props) => {
       </View>
       <View
         style={tailwind(
-          "pt-4 pb-6 text-grey-darker flex flex-row items-center"
+          "pt-4 pb-4 text-grey-darker flex flex-row items-center"
         )}
       >
         <View style={tailwind("pl-1 pr-6 flex items-center")}>
@@ -143,6 +148,7 @@ const SingleQuestionScreen = ({ route }: Props) => {
       <View>
         <Input
           style={tailwind("border p-2 rounded-sm")}
+          inputStyle={tailwind("h-12")}
           control={control as any}
           errors={errors}
           name="reply"

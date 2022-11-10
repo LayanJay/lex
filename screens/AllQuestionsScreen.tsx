@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import { useEffect, useState } from "react";
 import { useTailwind } from "tailwind-rn";
 import QuestionCard from "../components/QuestionCard";
@@ -9,7 +9,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigator/RootNavigator";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-
 
 type QuestionScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -37,7 +36,7 @@ const AllQuestionsScreen = ({ navigation }: Props) => {
   }, []);
 
   return (
-    <View style={tailwind("p-4")}>
+    <View style={tailwind("p-4 h-full relative")}>
       <Text style={tailwind("text-lg pb-3")}>Recents Questions</Text>
       <ScrollView>
         {questions &&
@@ -49,6 +48,21 @@ const AllQuestionsScreen = ({ navigation }: Props) => {
             />
           ))}
       </ScrollView>
+      <View style={tailwind("absolute bottom-0 right-0 mx-3 my-3 z-20")}>
+        <Pressable
+          onPress={() => navigation.navigate("AddQuestion")}
+          style={tailwind(
+            "bg-black p-4 rounded-full flex items-center justify-center"
+          )}
+        >
+          <Ionicons
+            style={tailwind("pl-1")}
+            name="add-outline"
+            size={44}
+            color="white"
+          />
+        </Pressable>
+      </View>
     </View>
   );
 };
