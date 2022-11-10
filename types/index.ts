@@ -5,6 +5,7 @@ export type QuestionType = {
   upvotes: string[];
   createdBy: string;
   createdAt: any;
+  isAnswered: boolean;
 };
 
 export type AnswerType = {

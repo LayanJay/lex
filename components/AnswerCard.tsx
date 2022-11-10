@@ -29,9 +29,11 @@ const AnswerCard = ({ data }: Props) => {
     <View style={tailwind("pt-2 pb-3 border-b border-grey-light")}>
       <Text style={tailwind("text-grey-darker")}>{answer}</Text>
       <View style={tailwind("flex flex-row pt-2")}>
-        <Text style={tailwind("text-grey-main text-xs")}>
-          {dayjs(createdAt.toDate()).fromNow()}
-        </Text>
+        {createdAt && (
+          <Text style={tailwind("text-grey-main text-xs")}>
+            {dayjs(createdAt.toDate()).fromNow()}
+          </Text>
+        )}
         {createdUser && (
           <Text style={tailwind("text-grey-dark font-semibold text-xs")}>
             {" "}

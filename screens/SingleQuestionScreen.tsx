@@ -13,13 +13,19 @@ import {
   collection,
   doc,
   onSnapshot,
+  orderBy,
   query,
-  Timestamp,
+  serverTimestamp,
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import AnswerCard from "../components/AnswerCard";
-import { addAnswer, updateUpvote } from "../lib/mutations/questions";
+import {
+  addAnswer,
+  deleteQuestion,
+  updateIsQuestionAnswered,
+  updateUpvote,
+} from "../lib/mutations/questions";
 import dayjs from "dayjs";
 
 type QuestionScreenNavigationProp = StackNavigationProp<
@@ -38,7 +44,7 @@ type Props = {
 const user = "7JwLj0rwO1uIkBg5lBZi";
 const userName = "Saul GoodMan";
 
-const SingleQuestionScreen = ({ route }: Props) => {
+const SingleQuestionScreen = ({ route, navigation }: Props) => {
   const tailwind = useTailwind();
   const {
     control,
@@ -56,6 +62,7 @@ const SingleQuestionScreen = ({ route }: Props) => {
   const [question, setQuestion] = useState<QuestionType | null>();
   const [answers, setAnswers] = useState<AnswerType[] | null>();
   const [voted, setVoted] = useState<boolean>();
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "questions", questionId), (doc) => {
@@ -90,13 +97,14 @@ const SingleQuestionScreen = ({ route }: Props) => {
       questionId,
       answer: data.reply,
       createdBy: user,
-      createdAt: new Date(),
+      createdAt: serverTimestamp(),
     };
 
     reset({
       reply: "",
     });
     await addAnswer(answer);
+    await updateIsQuestionAnswered(questionId, true);
   };
 
   const handleUpdateVote = async (
@@ -107,76 +115,111 @@ const SingleQuestionScreen = ({ route }: Props) => {
     await updateUpvote(qid, id, type);
   };
 
+  const handleDeleteQuestion = async (id: string) => {
+    setDeleteLoading(true);
+    await deleteQuestion(id);
+    navigation.navigate("AllQuestions");
+  };
+
   return (
     <View style={tailwind("p-4 flex")}>
-      <Text style={tailwind("text-2xl font-semibold")}>{question?.title}</Text>
-      <View style={tailwind("flex flex-row justify-between w-full")}>
-        <Text style={tailwind("text-xs pt-1 text-grey-dark")}>
-          by {userName}
-        </Text>
-        <Text style={tailwind("text-xs pt-1 text-grey-dark")}>
-          {dayjs(question?.createdAt.toDate()).format("DD-MM-YYYY")}
-        </Text>
-      </View>
-      <View
-        style={tailwind(
-          "pt-4 pb-6 text-grey-darker flex flex-row items-center"
-        )}
-      >
-        <View style={tailwind("pl-1 pr-6 flex items-center")}>
-          <AntDesign
-            name={voted ? "like1" : "like2"}
-            size={24}
-            color="black"
-            onPress={() => {
-              handleUpdateVote(questionId, user, voted ? "remove" : "add");
-            }}
-          />
-
-          <Text style={tailwind("text-xs pt-1")}>
-            {question?.upvotes.length}
+      {!deleteLoading ? (
+        <View>
+          <Text style={tailwind("text-2xl font-semibold")}>
+            {question?.title}
           </Text>
-        </View>
-        <Text style={tailwind("text-base w-4/5")}>{question?.question}</Text>
-      </View>
-      <View>
-        <Input
-          style={tailwind("border p-2 rounded-sm")}
-          control={control as any}
-          errors={errors}
-          name="reply"
-          label=""
-          placeholder="Add your thoughts here..."
-          registerOptions={{
-            required: {
-              value: true,
-              message: "*Required",
-            },
-          }}
-        />
-        <Pressable
-          style={tailwind(
-            "bg-black text-white flex flex-row items-center justify-center py-2 my-3"
-          )}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <Text style={tailwind("text-white text-lg")}>Post</Text>
-        </Pressable>
-      </View>
-      <View style={tailwind("h-96 pt-2")}>
-        <Text style={tailwind("text-lg")}>Answers</Text>
-        <ScrollView style={tailwind("pt-1 h-full")}>
-          {answers && answers.length > 0 ? (
-            answers.map((answer) => (
-              <AnswerCard key={answer.id} data={answer} />
-            ))
-          ) : (
-            <View style={tailwind("py-16 flex items-center w-full")}>
-              <Text>Nothing here yet.</Text>
+          <View style={tailwind("flex flex-row justify-between w-full")}>
+            <Text style={tailwind("text-xs pt-1 text-grey-dark")}>
+              by {userName}
+            </Text>
+            <Text style={tailwind("text-xs pt-1 text-grey-dark")}>
+              {dayjs(question?.createdAt.toDate()).format("DD-MM-YYYY")}
+            </Text>
+          </View>
+          <View
+            style={tailwind(
+              "pt-4 pb-4 text-grey-darker flex flex-row items-center"
+            )}
+          >
+            <View style={tailwind("pl-1 pr-6 flex items-center")}>
+              <AntDesign
+                name={voted ? "like1" : "like2"}
+                size={24}
+                color="black"
+                onPress={() => {
+                  handleUpdateVote(questionId, user, voted ? "remove" : "add");
+                }}
+              />
+
+              <Text style={tailwind("text-xs pt-1")}>
+                {question?.upvotes.length}
+              </Text>
             </View>
-          )}
-        </ScrollView>
-      </View>
+            <Text style={tailwind("text-base w-4/5")}>
+              {question?.question}
+            </Text>
+          </View>
+          <View>
+            <Input
+              style={tailwind("border p-2 rounded-sm")}
+              inputStyle={tailwind("h-12")}
+              control={control as any}
+              errors={errors}
+              name="reply"
+              label=""
+              placeholder="Add your thoughts here..."
+              registerOptions={{
+                required: {
+                  value: true,
+                  message: "*Required",
+                },
+              }}
+            />
+            <Pressable
+              style={tailwind(
+                "bg-black text-white flex flex-row items-center justify-center py-2 mt-3 mb-2"
+              )}
+              onPress={handleSubmit(onSubmit)}
+            >
+              <Text style={tailwind("text-white text-lg")}>Post</Text>
+            </Pressable>
+            {question?.createdBy === user && (
+              <Pressable
+                style={tailwind(
+                  "bg-black text-white flex flex-row items-center justify-center py-2 mb-3 bg-red-800"
+                )}
+                onPress={() => {
+                  handleDeleteQuestion(questionId);
+                }}
+              >
+                <Text style={tailwind("text-white text-lg")}>Delete</Text>
+              </Pressable>
+            )}
+          </View>
+          <View style={tailwind("h-96 pt-2")}>
+            <Text style={tailwind("text-lg")}>Answers</Text>
+            <ScrollView style={tailwind("pt-1 h-full")}>
+              {answers && answers.length > 0 ? (
+                answers
+                  .sort((a, b) =>
+                    dayjs(
+                      a.createdAt && b.createdAt && a.createdAt.toDate()
+                    ).isBefore(b.createdAt && b.createdAt.toDate())
+                      ? 1
+                      : -1
+                  )
+                  .map((answer) => <AnswerCard key={answer.id} data={answer} />)
+              ) : (
+                <View style={tailwind("py-8 flex items-center w-full")}>
+                  <Text>Nothing here yet.</Text>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      ) : (
+        <Text>Deleteing</Text>
+      )}
     </View>
   );
 };
