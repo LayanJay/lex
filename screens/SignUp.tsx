@@ -1,29 +1,33 @@
 import {
-  Text,
-  Image,
   View,
+  Text,
+  ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  ScrollView,
+  Image,
   TouchableOpacity,
 } from 'react-native'
+import React from 'react'
 import { useTailwind } from 'tailwind-rn/dist'
 import Logo from '../assets/logo.png'
-import { useForm } from 'react-hook-form'
 import Input from '../components/Input'
-import React from 'react'
-import Button from '../components/Button'
 import { useAuth } from '../store'
+import { useForm } from 'react-hook-form'
+import Button from '../components/Button'
 
-const SignIn = ({ navigation }: any) => {
+const SignUp = ({ navigation }: any) => {
   const tailwind = useTailwind()
-  const signIn = useAuth(s => s.signIn)
+  const signUp = useAuth(s => s.signUp)
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
+      firstname: '',
+      lastname: '',
+      occupation: '',
+      nic: '',
       email: '',
       password: '',
     },
@@ -31,13 +35,11 @@ const SignIn = ({ navigation }: any) => {
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await signIn({ ...data })
-      navigation.navigate('Home')
+      await signUp(data).then(() => navigation.navigate('Home'))
     } catch (error) {
       console.log(error)
     }
   })
-
   return (
     <ScrollView style={tailwind('py-4 px-4 bg-white')}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -48,8 +50,60 @@ const SignIn = ({ navigation }: any) => {
               'font-primary-600 font-semibold text-4xl text-center mb-4'
             )}
           >
-            Log In
+            Sign Up
           </Text>
+
+          <Input
+            style={tailwind('border p-2 rounded-sm mb-4')}
+            labelStyle={tailwind('mb-1')}
+            control={control as any}
+            errors={errors}
+            name='firstname'
+            label='First Name'
+            placeholder='Ex: John'
+            registerOptions={{
+              required: '*Required',
+            }}
+          />
+          <Input
+            style={tailwind('border p-2 rounded-sm mb-4')}
+            labelStyle={tailwind('mb-1')}
+            control={control as any}
+            errors={errors}
+            name='lastname'
+            label='Last Name'
+            placeholder='Ex: Doe'
+            registerOptions={{
+              required: '*Required',
+            }}
+          />
+
+          <Input
+            style={tailwind('border p-2 rounded-sm mb-4')}
+            labelStyle={tailwind('mb-1')}
+            control={control as any}
+            errors={errors}
+            name='occupation'
+            label='Occupation'
+            placeholder='Ex: Lawyer'
+            registerOptions={{
+              required: '*Required',
+            }}
+          />
+
+          <Input
+            style={tailwind('border p-2 rounded-sm mb-4')}
+            labelStyle={tailwind('mb-1')}
+            control={control as any}
+            errors={errors}
+            name='nic'
+            label='NIC'
+            placeholder='Ex: 998745632v'
+            registerOptions={{
+              required: '*Required',
+            }}
+          />
+
           <Input
             style={tailwind('border p-2 rounded-sm mb-4')}
             labelStyle={tailwind('mb-1')}
@@ -87,18 +141,19 @@ const SignIn = ({ navigation }: any) => {
               },
             }}
           />
-          <Button onPress={onSubmit} text='Sign In' />
+          <Button onPress={onSubmit} text='Sign Up' />
           <View style={tailwind('flex items-center pt-20')}>
             <Text style={tailwind('text-sm text-gray-400')}>
-              Don't have an account?
+              Already have an account?
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Sign In')}>
               <View>
                 <Text style={tailwind('font-semibold text-lg text-gray-600')}>
-                  Sign Up
+                  Sign In
                 </Text>
               </View>
             </TouchableOpacity>
+            <View style={{ height: 50 }}></View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -106,4 +161,4 @@ const SignIn = ({ navigation }: any) => {
   )
 }
 
-export default SignIn
+export default SignUp
