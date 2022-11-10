@@ -13,8 +13,9 @@ import {
   collection,
   doc,
   onSnapshot,
+  orderBy,
   query,
-  Timestamp,
+  serverTimestamp,
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
@@ -90,7 +91,7 @@ const SingleQuestionScreen = ({ route }: Props) => {
       questionId,
       answer: data.reply,
       createdBy: user,
-      createdAt: new Date(),
+      createdAt: serverTimestamp(),
     };
 
     reset({
@@ -167,11 +168,17 @@ const SingleQuestionScreen = ({ route }: Props) => {
         <Text style={tailwind("text-lg")}>Answers</Text>
         <ScrollView style={tailwind("pt-1 h-full")}>
           {answers && answers.length > 0 ? (
-            answers.map((answer) => (
-              <AnswerCard key={answer.id} data={answer} />
-            ))
+            answers
+              .sort((a, b) =>
+                dayjs(
+                  a.createdAt && b.createdAt && a.createdAt.toDate()
+                ).isBefore(b.createdAt && b.createdAt.toDate())
+                  ? 1
+                  : -1
+              )
+              .map((answer) => <AnswerCard key={answer.id} data={answer} />)
           ) : (
-            <View style={tailwind("py-16 flex items-center w-full")}>
+            <View style={tailwind("py-8 flex items-center w-full")}>
               <Text>Nothing here yet.</Text>
             </View>
           )}
