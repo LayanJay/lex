@@ -7,12 +7,37 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
-import { AnswerType } from "../../types";
+import { AnswerType, QuestionType } from "../../types";
 
-export const addAnswer = (data: AnswerType) => {
+export const createQuestion = async (data: QuestionType) => {
+  try {
+    const ref = collection(db, "questions");
+    const res = await addDoc(ref, data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addAnswer = async (data: AnswerType) => {
   try {
     const ref = collection(db, "answers");
-    const res = addDoc(ref, data);
+    const res = await addDoc(ref, data);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateIsQuestionAnswered = async (
+  id: string,
+  isAnswered: boolean
+) => {
+  try {
+    const ref = doc(db, "questions", id);
+    const res = await updateDoc(ref, {
+      isAnswered: isAnswered,
+    });
     return res;
   } catch (error) {
     console.log(error);

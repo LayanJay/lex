@@ -3,7 +3,13 @@ import React from "react";
 import { useTailwind } from "tailwind-rn/dist";
 import DataCard from "../components/DataCard";
 import { useEffect, useState } from "react";
-import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
 import QuestionCard from "../components/QuestionCard";
@@ -109,10 +115,17 @@ const AdminDashboardScreen = () => {
       {approvedLawyers && approvedLawyers?.length > limit ? (
         <View style={tailwind("pt-2 flex flex-row justify-center")}>
             {limit != 3 ? (
-                 <Text onPress={() => setLimit(3)} style={tailwind("font-semibold text-sm")}>
+              <Text
+                onPress={() => setLimit(3)}
+                style={tailwind("font-semibold text-sm")}
+              >
                 See less
-            </Text>
-            ) : ( <Text onPress={() => setLimit(-1)} style={tailwind("font-semibold text-sm")}>
+              </Text>
+            ) : (
+              <Text
+                onPress={() => setLimit(-1)}
+                style={tailwind("font-semibold text-sm")}
+              >
                 See more
             </Text>)}
            
@@ -135,7 +148,16 @@ const AdminDashboardScreen = () => {
                 
             </View>
         </View>
-    );
+
+        <ScrollView>
+          {questions &&
+            questions.map((question) => (
+              <QuestionCard key={question.id} data={question} />
+            ))}
+        </ScrollView>
+      </View>
+    </View>
+  );
 };
 
 export default AdminDashboardScreen;

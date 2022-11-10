@@ -13,13 +13,18 @@ import {
   collection,
   doc,
   onSnapshot,
+  orderBy,
   query,
-  Timestamp,
+  serverTimestamp,
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import AnswerCard from "../components/AnswerCard";
-import { addAnswer, updateUpvote } from "../lib/mutations/questions";
+import {
+  addAnswer,
+  updateIsQuestionAnswered,
+  updateUpvote,
+} from "../lib/mutations/questions";
 import dayjs from "dayjs";
 
 type QuestionScreenNavigationProp = StackNavigationProp<
@@ -90,13 +95,14 @@ const SingleQuestionScreen = ({ route }: Props) => {
       questionId,
       answer: data.reply,
       createdBy: user,
-      createdAt: new Date(),
+      createdAt: serverTimestamp(),
     };
 
     reset({
       reply: "",
     });
     await addAnswer(answer);
+    await updateIsQuestionAnswered(questionId, true);
   };
 
   const handleUpdateVote = async (
@@ -120,7 +126,7 @@ const SingleQuestionScreen = ({ route }: Props) => {
       </View>
       <View
         style={tailwind(
-          "pt-4 pb-6 text-grey-darker flex flex-row items-center"
+          "pt-4 pb-4 text-grey-darker flex flex-row items-center"
         )}
       >
         <View style={tailwind("pl-1 pr-6 flex items-center")}>
@@ -142,6 +148,7 @@ const SingleQuestionScreen = ({ route }: Props) => {
       <View>
         <Input
           style={tailwind("border p-2 rounded-sm")}
+          inputStyle={tailwind("h-12")}
           control={control as any}
           errors={errors}
           name="reply"
@@ -167,11 +174,17 @@ const SingleQuestionScreen = ({ route }: Props) => {
         <Text style={tailwind("text-lg")}>Answers</Text>
         <ScrollView style={tailwind("pt-1 h-full")}>
           {answers && answers.length > 0 ? (
-            answers.map((answer) => (
-              <AnswerCard key={answer.id} data={answer} />
-            ))
+            answers
+              .sort((a, b) =>
+                dayjs(
+                  a.createdAt && b.createdAt && a.createdAt.toDate()
+                ).isBefore(b.createdAt && b.createdAt.toDate())
+                  ? 1
+                  : -1
+              )
+              .map((answer) => <AnswerCard key={answer.id} data={answer} />)
           ) : (
-            <View style={tailwind("py-16 flex items-center w-full")}>
+            <View style={tailwind("py-8 flex items-center w-full")}>
               <Text>Nothing here yet.</Text>
             </View>
           )}
