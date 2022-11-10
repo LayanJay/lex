@@ -30,24 +30,43 @@ const ViewPollScreen = ({ navigation, route }: any) => {
   const [options, setOptions] = useState<any[]>([]);
   const [responses, setResponses] = useState<any[]>([]);
   const [voted, setVoted] = useState(false);
+  const [stats, setStats] = useState<any>({});
 
   useEffect(() => {
     getOptions();
     getResponses();
-
-    // responses
   }, []);
+
+  useEffect(() => {
+    console.log(responses?.length, options?.length);
+    if (responses?.length > 0 && options?.length > 0) calculateStats();
+  }, [options, responses]);
+
+  const calculateStats = () => {
+    console.log("Update");
+
+    let cpy: any = { ...stats };
+
+    responses?.forEach((res) => {
+      cpy[res.optionId] = cpy[res.optionId] + 1;
+    });
+
+    setStats(cpy);
+  };
 
   const getOptions = () => {
     const ref = collection(db, "poll-options");
     const q = query(ref, where("pollId", "==", item.id));
 
     let data: any[] = [];
+    let optionStats: any = {};
     getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        data.push({ id: doc.id, ...doc.data() });
+        optionStats[doc.id] = 0;
+        data.push({ id: doc.id, ...doc.data(), count: 0 });
       });
       setOptions(data);
+      setStats(optionStats);
     });
   };
 
@@ -56,9 +75,11 @@ const ViewPollScreen = ({ navigation, route }: any) => {
     const q = query(ref, where("pollId", "==", item.id));
 
     let data: any[] = [];
+
     getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         if (doc.data().userId == USER_ID) setVoted(true);
+
         data.push({ id: doc.id, ...doc.data() });
       });
       setResponses(data);
@@ -67,7 +88,6 @@ const ViewPollScreen = ({ navigation, route }: any) => {
 
   const castVote = async (optId: any) => {
     let ref = doc(collection(db, "poll-responses"));
-    let id = ref.id;
 
     setVoted(true);
     const data = {
@@ -81,8 +101,6 @@ const ViewPollScreen = ({ navigation, route }: any) => {
 
   return (
     <View style={tailwind("p-4")}>
-      <Text style={tailwind("py-4")}>View</Text>
-
       <Text style={tailwind("text-4xl font-primary-600")}>{item.topic}</Text>
 
       <Text style={tailwind("mt-4")}>{item.description}</Text>
@@ -99,10 +117,44 @@ const ViewPollScreen = ({ navigation, route }: any) => {
       </View>
 
       <Text style={tailwind("text-xl mt-12 font-primary-600")}>
-        Cast your vote
+        {dayjs().isAfter(dayjs(item.endsOn.toDate()))
+          ? "Results"
+          : "Cast your vote"}
       </Text>
 
-      {voted ? (
+      {dayjs().isAfter(dayjs(item.endsOn.toDate())) ? (
+        <>
+          <Text style={tailwind("text-xl font-primary-600")}>
+            {responses.length} Total Votes
+          </Text>
+          <View style={tailwind("mt-6")}>
+            {stats &&
+              Object.keys(stats).map((key) => (
+                <View style={tailwind("mt-2")}>
+                  <Text>
+                    {options.find((o) => o.id == key).value} (
+                    {((stats[key] / responses.length) * 100).toFixed(1)} %)
+                  </Text>
+                  <View
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#E7E7E7",
+                      height: 30,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: `${(stats[key] / responses.length) * 100}%`,
+                        backgroundColor: "#000",
+                        height: 30,
+                      }}
+                    ></View>
+                  </View>
+                </View>
+              ))}
+          </View>
+        </>
+      ) : voted ? (
         <View
           style={{
             width: "100%",
@@ -114,9 +166,12 @@ const ViewPollScreen = ({ navigation, route }: any) => {
             marginTop: 12,
           }}
         >
-          <Text>You have already voted</Text>
+          <Text>You have already voted. </Text>
+          <Text>
+            Poll results will be shown {dayjs(item.endsOn.toDate()).fromNow()}
+          </Text>
         </View>
-      ) : dayjs().isBefore(dayjs(item.endsOn.toDate())) ? (
+      ) : (
         <View style={tailwind("mt-4")}>
           {options && responses ? (
             options.map((op) => (
@@ -132,8 +187,6 @@ const ViewPollScreen = ({ navigation, route }: any) => {
             <ActivityIndicator />
           )}
         </View>
-      ) : (
-        <Text>Fucking TODO</Text>
       )}
     </View>
   );
