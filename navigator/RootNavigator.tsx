@@ -15,6 +15,7 @@ export type RootStackParamList = {
     name: string;
   };
   AddQuestion: undefined;
+  AddQuestion1: undefined;
   AllQuestions: undefined;
   SingleQuestion: { questionId: string };
   SignIn: undefined;
@@ -28,8 +29,6 @@ const RootNavigator = () => {
     <RootStack.Navigator>
       <RootStack.Group>
         <RootStack.Screen name="Main" component={TabNavigator} />
-        <RootStack.Screen name="AddQuestion" component={AddQuestionScreen} />
-        <RootStack.Screen name="Sign In" component={SignIn} />
         <RootStack.Screen name="ViewPoll" component={ViewPollScreen} />
         <RootStack.Screen name="Create Poll" component={CreatePollScreen} />
         <RootStack.Screen
@@ -38,11 +37,11 @@ const RootNavigator = () => {
           options={{ title: "Forum" }}
         />
         <RootStack.Screen name="AllQuestions" component={AllQuestionsScreen} />
-        <RootStack.Screen
+        {/* <RootStack.Screen
           name="SingleQuestion"
           component={SingleQuestionScreen}
           options={{ title: "Forum" }}
-        />
+        /> */}
         <RootStack.Screen name="Sign In" component={SignIn} />
       </RootStack.Group>
     </RootStack.Navigator>
