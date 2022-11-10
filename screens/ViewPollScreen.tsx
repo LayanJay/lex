@@ -130,7 +130,7 @@ const ViewPollScreen = ({ navigation, route }: any) => {
           <View style={tailwind("mt-6")}>
             {stats &&
               Object.keys(stats).map((key) => (
-                <View style={tailwind("mt-2")}>
+                <View style={tailwind("mt-2")} key={key}>
                   <Text>
                     {options.find((o) => o.id == key).value} (
                     {((stats[key] / responses.length) * 100).toFixed(1)} %)
