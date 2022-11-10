@@ -13,65 +13,107 @@ import {
 import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
 import QuestionCard from "../components/QuestionCard";
+import LawyerCard from "../components/LawyerCard";
+import DashboardInfo from "../components/DashboardInfo";
 
-const AdminDashboardScreen = ({}) => {
-  const [answers, setAnswers] = useState<any[]>();
-  const [questions, setQuestions] = useState<QuestionType[]>();
-  const [limit, setLimit] = useState<number>(3);
+const AdminDashboardScreen = () => {
+    const [notApprovedLawyers, setNotApprovedLawyers] = useState<any[]>();
+    const [approvedLawyers, setApprovedLawyers] = useState<any[]>();
+    const [allUsers, setAllUsers] = useState<any[]>();
+    const [analysts, setAnalysts] = useState<any[]>();
+     const [lawyers, setLawyers] = useState<any[]>();
+    const [limit, setLimit] = useState<number>(3)
 
-  useEffect(() => {
-    const getQuestionData = async () => {
-      const ref = collection(db, "questions");
-      const q = query(ref, where("answeredBy", "==", "7JwLj0rwO1uIkBg5lBZi"));
-      let data: QuestionType[] = [];
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        data.push({ id: doc.id, ...doc.data() } as QuestionType);
+    useEffect(() => {
+      //get approved lawyers
+    const getApprovedLawyerData = async () => {
+    const ref = collection(db, "user");
+    const q = query(ref, where("role", "==", "lawyer"), where("approved", "==", true))
+    let data: any[] = [];
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
       });
-      setQuestions(data);
-    };
-    getQuestionData();
+      setApprovedLawyers(data);
+    }
+    //get not approved lawyers
+    const getNotApprovedLawyerData = async () => {
+    const ref = collection(db, "user");
+    const q = query(ref, where("role", "==", "lawyer"), where("approved", "==", false))
+    let data: any[] = [];
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      setNotApprovedLawyers(data);
+    }
+    //get all users
+    const getAllUsers = async () => {
+    const ref = collection(db, "user");
+    const querySnapshot = await getDocs(ref)
+    let data: any[] = [];
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      setAllUsers(data);
+    }
+    //get analysts
+    const getAnalysts = async () => {
+    const ref = collection(db, "user");
+    const q = query(ref, where("role", "==", "analyst"))
+    let data: any[] = [];
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      setAnalysts(data);
+    }
+    //get lawyers
+    const getLawyers = async () => {
+    const ref = collection(db, "user");
+    const q = query(ref, where("role", "==", "lawyer"))
+    let data: any[] = [];
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      setLawyers(data);
+    }
+    getApprovedLawyerData()
+    getNotApprovedLawyerData()
+    getAllUsers()
+    getAnalysts()
+    getLawyers()
+    
   }, []);
 
-  const tailwind = useTailwind();
+  console.log("appr", approvedLawyers)
 
-  return (
-    <View style={tailwind("p-4")}>
-      <View style={tailwind("flex flex-row justify-between")}>
-        <View>
-          <Text style={tailwind("text-2xl font-semibold")}>Dashboard</Text>
-          <Text style={tailwind("text-lg text-gray-400")}>
-            Ravi Adminrathne
-          </Text>
-          <View style={tailwind("bg-gray-400 flex flex-row justify-center")}>
-            <Text style={tailwind("text-xs font-light ")}>Admin</Text>
-          </View>
-        </View>
-        <View>
-          <Text>Image</Text>
-        </View>
-      </View>
-      <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
-        <DataCard type="Total users" number={23} />
-        <DataCard type="Analysts" number={23} />
-        <DataCard type="Lawyers" number={23} />
-      </View>
-      <View style={tailwind("mt-14")}>
-        <View>
-          <Text style={tailwind("font-semibold text-xl")}>Newly approved</Text>
-          <Text style={tailwind("font-semibold text-xl pb-3")}>Lawyers</Text>
-        </View>
+    const tailwind = useTailwind();
 
-        <ScrollView>
-          {questions &&
-            questions
-              .slice(0, limit)
-              .map((question) => (
-                <QuestionCard key={question.id} data={question} />
-              ))}
-        </ScrollView>
-        {questions && questions?.length > limit ? (
-          <View style={tailwind("pt-2 flex flex-row justify-center")}>
+    return (
+        <View style={tailwind("p-4")}>
+            <DashboardInfo role='Admin' firstname="Ravi" lastname="Adminrathne"/>
+            
+            <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
+              {allUsers && allUsers?.length ? <DataCard type="Total users" number={allUsers?.length} p={`p-6`}/> : <DataCard type="Total users" number={0} p={`p-6`}/>}
+              {analysts && analysts?.length ? <DataCard type="Analysts" number={analysts?.length} p={`p-6`}/> : <DataCard type="Analysts" number={0} p={`p-6`}/>}
+              {lawyers && lawyers?.length ? <DataCard type="Lawyers" number={lawyers?.length} p={`p-6`}/> : <DataCard type="Lawyers" number={0} p={`p-6`}/>}
+            </View>
+            <View style={tailwind("mt-14")}>
+                <View>
+                    <Text style={tailwind("font-semibold text-xl")}>Newly approved</Text>
+                    <Text style={tailwind("font-semibold text-xl pb-3")}>Lawyers</Text>
+                </View>
+                
+                    <ScrollView>
+        {approvedLawyers &&
+          approvedLawyers.slice(0, limit).map((lawyer) => (
+            <LawyerCard key={lawyer.id} data={lawyer} />
+          ))}
+      </ScrollView>
+      {approvedLawyers && approvedLawyers?.length > limit ? (
+        <View style={tailwind("pt-2 flex flex-row justify-center")}>
             {limit != 3 ? (
               <Text
                 onPress={() => setLimit(3)}
@@ -85,19 +127,26 @@ const AdminDashboardScreen = ({}) => {
                 style={tailwind("font-semibold text-sm")}
               >
                 See more
-              </Text>
-            )}
-          </View>
-        ) : (
-          ""
-        )}
-      </View>
-      <View style={tailwind("mt-14")}>
-        <View>
-          <Text style={tailwind("font-semibold text-xl")}>
-            Approval pending
-          </Text>
-          <Text style={tailwind("font-semibold text-xl pb-3")}>Lawyers</Text>
+            </Text>)}
+           
+        </View>
+      ) : ('')}
+                
+            </View>
+            <View style={tailwind("mt-14")}>
+                <View>
+                    <Text style={tailwind("font-semibold text-xl")}>Approval pending</Text>
+                    <Text style={tailwind("font-semibold text-xl pb-3")}>Lawyers</Text>
+                </View>
+                
+                    <ScrollView>
+        {notApprovedLawyers &&
+          notApprovedLawyers.map((lawyer) => (
+            <LawyerCard key={lawyer.id} data={lawyer} />
+          ))}
+      </ScrollView>
+                
+            </View>
         </View>
 
         <ScrollView>

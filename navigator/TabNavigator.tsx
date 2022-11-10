@@ -6,6 +6,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ListPollsScreen from "../screens/ListPollsScreen";
 import LawyerDashboardScreen from "../screens/LawyerDashboardScreen";
 import AdminDashboardScreen from "../screens/AdminDashboardScreen";
+import UserDashboardScreen from "../screens/UserDashboardScreen";
 import React from "react";
 
 export type TabStackParamList = {
