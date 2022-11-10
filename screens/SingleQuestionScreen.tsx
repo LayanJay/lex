@@ -1,4 +1,4 @@
-import { View, Text, Button, Pressable, ScrollView } from "react-native";
+import { View, Text, Button, Pressable, ScrollView, Modal } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigator/RootNavigator";
@@ -63,6 +63,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
   const [answers, setAnswers] = useState<AnswerType[] | null>();
   const [voted, setVoted] = useState<boolean>();
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "questions", questionId), (doc) => {
@@ -189,7 +190,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
                   "bg-black text-white flex flex-row items-center justify-center py-2 mb-3 bg-red-800"
                 )}
                 onPress={() => {
-                  handleDeleteQuestion(questionId);
+                  setOpenDeleteModal(true);
                 }}
               >
                 <Text style={tailwind("text-white text-lg")}>Delete</Text>
@@ -220,6 +221,43 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
       ) : (
         <Text>Deleteing</Text>
       )}
+
+      <Modal animationType="fade" visible={openDeleteModal} transparent={false}>
+        <View style={tailwind("px-4 py-8 flex h-full ")}>
+          <View>
+            <Text style={tailwind("text-2xl font-semibold ")}>
+              Are you sure?
+            </Text>
+            <Text style={tailwind("text-lg pt-3 pb-4")}>
+              Are you sure you want to delete this question? This action cannot
+              be undone.
+            </Text>
+          </View>
+          <View style={tailwind("mt-auto")}>
+            <Pressable
+              style={tailwind(
+                "bg-black text-white flex flex-row items-center justify-center py-2 mt-3 mb-1"
+              )}
+              onPress={() => {
+                setOpenDeleteModal(false);
+              }}
+            >
+              <Text style={tailwind("text-white text-lg")}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              style={tailwind(
+                "bg-red-800 text-white flex flex-row items-center justify-center py-2 mt-1 mb-2"
+              )}
+              onPress={() => {
+                handleDeleteQuestion(questionId);
+                setOpenDeleteModal(false);
+              }}
+            >
+              <Text style={tailwind("text-white text-lg")}>Confirm</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
