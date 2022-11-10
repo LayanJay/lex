@@ -4,10 +4,12 @@ import { useLayoutEffect } from "react";
 import AllQuestionsScreen from "../screens/AllQuestionsScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ListPollsScreen from "../screens/ListPollsScreen";
+import React from "react";
 
 export type TabStackParamList = {
   Home: undefined;
   Forum: undefined;
+  Polls: undefined;
   // add other tab types here
 };
 
