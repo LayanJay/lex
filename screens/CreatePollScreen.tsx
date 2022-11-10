@@ -11,11 +11,21 @@ import {
 } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import PollConfirmModal from "../components/PollCreateConfirmModal";
+import PollErrorModal from "../components/PollErrorModal";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 const CreatePollScreen = ({ navigation, route }: any) => {
   const tailwind = useTailwind();
 
+  const TEMP_USER_ID = "7JwLj0rwO1uIkBg5lBZi";
+
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
+
   const [dateOpen, setDateOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [answers, setAnswers] = useState([
@@ -37,8 +47,56 @@ const CreatePollScreen = ({ navigation, route }: any) => {
     setDate(currentDate);
   };
 
-  const createPoll = () => {
-    console.log("FK U");
+  const validatePoll = () => {
+    if (title.length == 0 || description.length == 0) {
+      setValidationError("All fields are required");
+      return;
+    }
+
+    if (answers.length <= 1) {
+      setValidationError("You must add at least 2 answers to the poll");
+      return;
+    }
+
+    if (date < new Date()) {
+      setValidationError("Date cannot be from the past");
+      return;
+    }
+
+    setModalVisible(true);
+  };
+
+  const createPoll = async () => {
+    setModalVisible(false);
+
+    // add poll
+    let ref = doc(collection(db, "polls"));
+    let id = ref.id;
+
+    const data = {
+      createdBy: TEMP_USER_ID,
+      description: description,
+      endsOn: date,
+      id: id,
+      topic: title,
+    };
+
+    await setDoc(ref, data);
+
+    // add poll
+
+    answers.forEach(async (answer) => {
+      let optionsRef = doc(collection(db, "poll-options"));
+      let optionsId = optionsRef.id;
+
+      const dataOptions = {
+        id: optionsId,
+        pollId: id,
+        value: answer.answer,
+      };
+
+      await setDoc(optionsRef, dataOptions);
+    });
   };
 
   return (
@@ -63,12 +121,13 @@ const CreatePollScreen = ({ navigation, route }: any) => {
         <TextInput
           placeholder="Description"
           multiline
+          value={description}
+          onChangeText={setDescription}
           numberOfLines={6}
           style={{
             marginTop: 12,
             borderWidth: 1,
             borderRadius: 4,
-
             paddingHorizontal: 14,
           }}
         />
@@ -79,7 +138,7 @@ const CreatePollScreen = ({ navigation, route }: any) => {
 
         {answers &&
           answers.map((elm) => (
-            <View style={tailwind("mt-2")}>
+            <View style={tailwind("mt-2")} key={elm.id}>
               <TextInput
                 blurOnSubmit={false}
                 value={answers.find((ans) => ans.id === elm.id)?.answer}
@@ -131,12 +190,26 @@ const CreatePollScreen = ({ navigation, route }: any) => {
       </View>
 
       <View style={tailwind("mt-8")}>
-        <Button title="Create Poll" onPress={createPoll} color="#000000" />
+        <Button title="Create Poll" onPress={validatePoll} color="#000000" />
       </View>
 
       {dateOpen && (
         <DateTimePicker value={date} onChange={onDateChange} mode={"date"} />
       )}
+
+      <PollConfirmModal
+        visible={modalVisible}
+        onClose={setModalVisible}
+        onConfirm={createPoll}
+      />
+
+      <PollErrorModal
+        visible={!!validationError}
+        text={validationError}
+        onClose={setValidationError}
+      />
+
+      <View style={tailwind("mt-8")}></View>
     </ScrollView>
   );
 };
