@@ -73,7 +73,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={ViewLawyerProfileScreen}
+        component={LawyerDashboardScreen}
         options={{
           tabBarIcon: () => <Octicons name="person" size={24} color="white" />,
         }}
