@@ -48,8 +48,8 @@ const QuestionCard = ({ data, navigation }: Props) => {
       </View>
       <Text style={tailwind("w-3/4 px-2")}>{title}</Text>
       {createdAt && (
-        <Text style={tailwind(" text-xs ")}>
-          {dayjs(createdAt.toDate()).format("mm")} min
+        <Text style={tailwind(" text-xs")}>
+          {dayjs(createdAt.toDate()).fromNow(true)}
         </Text>
       )}
     </TouchableOpacity>
