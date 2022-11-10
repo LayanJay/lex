@@ -229,7 +229,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
               Are you sure?
             </Text>
             <Text style={tailwind("text-lg pt-3 pb-4")}>
-              Are you sure you want to delete this question? This process cannot
+              Are you sure you want to delete this question? This action cannot
               be undone.
             </Text>
           </View>
