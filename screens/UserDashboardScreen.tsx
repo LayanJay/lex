@@ -8,6 +8,7 @@ import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
 import QuestionCard from "../components/QuestionCard";
 import DashboardInfo from "../components/DashboardInfo";
+import DashboardQuestionCard from "../components/DashboardQuestionCard";
 
 const UserDashboardScreen = () => {
     const [answeredQuestions, setAnsweredQuestions] = useState<QuestionType[]>();
@@ -71,7 +72,7 @@ const UserDashboardScreen = () => {
                     <ScrollView>
         {questions &&
           questions.slice(0, limit).map((question) => (
-            <QuestionCard key={question.id} data={question} />
+            <DashboardQuestionCard key={question.id} data={question} />
           ))}
       </ScrollView>
       {questions && questions?.length > limit ? (
