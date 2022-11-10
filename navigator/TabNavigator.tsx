@@ -7,6 +7,7 @@ import ListPollsScreen from "../screens/ListPollsScreen";
 import LawyerDashboardScreen from "../screens/LawyerDashboardScreen";
 import AdminDashboardScreen from "../screens/AdminDashboardScreen";
 import UserDashboardScreen from "../screens/UserDashboardScreen";
+import AnalystDashboardScreen from "../screens/AnalystDashboardScreen";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
@@ -71,7 +72,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Lawyer"
-        component={LawyerDashboardScreen}
+        component={AnalystDashboardScreen}
         options={{
           tabBarIcon: () => <Octicons name="person" size={24} color="white" />,
         }}
