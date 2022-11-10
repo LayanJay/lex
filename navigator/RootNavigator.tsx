@@ -6,6 +6,7 @@ import React from "react";
 import AllQuestionsScreen from "../screens/AllQuestionsScreen";
 import SingleQuestionScreen from "../screens/SingleQuestionScreen";
 
+
 export type RootStackParamList = {
   Main: undefined;
   Modal: {

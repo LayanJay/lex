@@ -4,12 +4,15 @@ import { useLayoutEffect } from "react";
 import AllQuestionsScreen from "../screens/AllQuestionsScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ListPollsScreen from "../screens/ListPollsScreen";
+import LawyerDashboardScreen from "../screens/LawyerDashboardScreen";
+import AdminDashboardScreen from "../screens/AdminDashboardScreen";
 import React from "react";
 
 export type TabStackParamList = {
   Home: undefined;
   Forum: undefined;
   Polls: undefined;
+  Lawyer: undefined;
   // add other tab types here
 };
 
@@ -29,6 +32,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Polls" component={ListPollsScreen} />
       <Tab.Screen name="Forum" component={AllQuestionsScreen} />
+      <Tab.Screen name="Lawyer" component={AdminDashboardScreen} />
       {/* Add the other tabs here */}
     </Tab.Navigator>
   );

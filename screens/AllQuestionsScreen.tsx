@@ -5,9 +5,11 @@ import QuestionCard from "../components/QuestionCard";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
-import React from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigator/RootNavigator";
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+
 
 type QuestionScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
