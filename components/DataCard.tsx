@@ -19,9 +19,6 @@ const DataCard = ({type, number, p}: Props) => {
                         <Text style={tailwind("font-bold text-4xl flex flex-row self-center")}>
                             {number}
                         </Text>
-                        
-                        
-                        
                     </View>
                 </View>
   );

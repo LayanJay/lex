@@ -33,7 +33,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Polls" component={ListPollsScreen} />
       <Tab.Screen name="Forum" component={AllQuestionsScreen} />
-      <Tab.Screen name="Lawyer" component={UserDashboardScreen} />
+      <Tab.Screen name="Lawyer" component={AdminDashboardScreen} />
       {/* Add the other tabs here */}
     </Tab.Navigator>
   );
