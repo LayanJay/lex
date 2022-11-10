@@ -3,6 +3,7 @@ import {
   arrayRemove,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   updateDoc,
 } from "firebase/firestore";
@@ -62,6 +63,16 @@ export const updateUpvote = async (
       });
       return res;
     }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteQuestion = async (id: string) => {
+  try {
+    const ref = doc(db, "questions", id);
+    const res = await deleteDoc(ref);
+    return res;
   } catch (error) {
     console.log(error);
   }
