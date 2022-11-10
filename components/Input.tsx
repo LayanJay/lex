@@ -1,16 +1,19 @@
-import { View, Text, TextInput } from 'react-native'
-import { Style } from 'tailwind-rn/dist'
-import { Controller, Control, RegisterOptions } from 'react-hook-form'
+import React from "react";
+import { View, Text, TextInput } from "react-native";
+import { Style, useTailwind } from "tailwind-rn";
+import { Controller, Control, RegisterOptions } from "react-hook-form";
 
 interface Props {
-  label: string
-  name: string
-  control: Control
-  style?: Style
-  inputStyle?: Style
-  errors: any
-  registerOptions?: RegisterOptions
-  placeholder: string
+  label: string;
+  name: string;
+  control: Control;
+  style?: Style;
+  inputStyle?: Style;
+  labelStyle?: Style;
+  errors: any;
+  registerOptions?: RegisterOptions;
+  placeholder: string;
+  multiline?: boolean;
 }
 
 const Input = ({
@@ -22,29 +25,39 @@ const Input = ({
   errors,
   registerOptions,
   placeholder,
+  labelStyle,
+  multiline = false,
 }: Props) => {
+  const tailwind = useTailwind();
   return (
-    <View style={style}>
-      <Text>{label}</Text>
-      <Controller
-        control={control}
-        rules={registerOptions}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            placeholder={placeholder}
-            style={inputStyle}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-        name={name}
-      />
-      {errors[name] && errors[name].message ? (
-        <Text>{errors[name].message}</Text>
-      ) : null}
+    <View>
+      {label && <Text style={labelStyle}>{label}</Text>}
+      <View style={style}>
+        <Controller
+          control={control}
+          rules={registerOptions}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              placeholder={placeholder}
+              style={inputStyle}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              multiline
+            />
+          )}
+          name={name}
+        />
+      </View>
+      <View style={tailwind("w-full flex flex-row justify-end pt-0.5")}>
+        {errors[name] && errors[name].message ? (
+          <Text style={tailwind("text-xs text-red-500")}>
+            {errors[name].message}
+          </Text>
+        ) : null}
+      </View>
     </View>
-  )
-}
+  );
+};
 
-export default Input
+export default Input;
