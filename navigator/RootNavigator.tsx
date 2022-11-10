@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import AddQuestionScreen from '../screens/AddQuestionScreen'
 import SignIn from '../screens/SignIn'
 import TabNavigator from './TabNavigator'
+import React from "react"
 
 export type RootStackParamList = {
   Main: undefined
