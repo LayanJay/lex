@@ -15,6 +15,7 @@ export type RootStackParamList = {
     name: string;
   };
   AddQuestion: undefined;
+  AddQuestion1: undefined;
   AllQuestions: undefined;
   SingleQuestion: { questionId: string };
   SignIn: undefined;
@@ -44,11 +45,11 @@ const RootNavigator = () => {
           options={{ title: "Forum" }}
         />
         <RootStack.Screen name="AllQuestions" component={AllQuestionsScreen} />
-        <RootStack.Screen
+        {/* <RootStack.Screen
           name="SingleQuestion"
           component={SingleQuestionScreen}
           options={{ title: "Forum" }}
-        />
+        /> */}
         <RootStack.Screen name="Sign In" component={SignIn} />
       </RootStack.Group>
     </RootStack.Navigator>
