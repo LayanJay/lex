@@ -3,7 +3,7 @@ import { useFonts } from 'expo-font'
 import { View, Text, SafeAreaView, Image, TextInput } from 'react-native'
 import { useTailwind } from 'tailwind-rn/dist'
 import Logo from '../assets/logo.png'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import Input from '../components/Input'
 
 const SignIn = () => {
