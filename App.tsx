@@ -1,17 +1,28 @@
-import { TailwindProvider } from 'tailwind-rn'
-import utilities from './tailwind.json'
-import { NavigationContainer } from '@react-navigation/native'
-import RootNavigator from './navigator/RootNavigator'
+import { TailwindProvider } from "tailwind-rn";
+import utilities from "./tailwind.json";
+import { NavigationContainer } from "@react-navigation/native";
+import RootNavigator from "./navigator/RootNavigator";
+import { useFonts } from "expo-font";
+import { PlayfairDisplay_600SemiBold } from "@expo-google-fonts/playfair-display";
+import React from "react";
 
 const App = () => {
-  return (
-    // @ts-ignore
-    <TailwindProvider utilities={utilities}>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </TailwindProvider>
-  )
-}
+  let [fontsLoaded] = useFonts({
+    PlayfairDisplay_600SemiBold,
+  });
 
-export default App
+  if (!fontsLoaded) {
+    return null;
+  } else {
+    return (
+      // @ts-ignore
+      <TailwindProvider utilities={utilities}>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </TailwindProvider>
+    );
+  }
+};
+
+export default App;
