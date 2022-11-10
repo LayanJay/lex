@@ -19,7 +19,7 @@ export type TabStackParamList = {
   Home: undefined;
   Forum: undefined;
   Polls: undefined;
-  Lawyer: undefined;
+  Profile: undefined;
   // add other tab types here
 };
 
@@ -71,8 +71,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Lawyer"
-        component={AnalystDashboardScreen}
+        name="Profile"
+        component={LawyerDashboardScreen}
         options={{
           tabBarIcon: () => <Octicons name="person" size={24} color="white" />,
         }}
