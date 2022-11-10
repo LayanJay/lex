@@ -13,9 +13,13 @@ import DashboardInfo from "../components/DashboardInfo";
 const AdminDashboardScreen = () => {
     const [notApprovedLawyers, setNotApprovedLawyers] = useState<any[]>();
     const [approvedLawyers, setApprovedLawyers] = useState<any[]>();
+    const [allUsers, setAllUsers] = useState<any[]>();
+    const [analysts, setAnalysts] = useState<any[]>();
+     const [lawyers, setLawyers] = useState<any[]>();
     const [limit, setLimit] = useState<number>(3)
 
     useEffect(() => {
+      //get approved lawyers
     const getApprovedLawyerData = async () => {
     const ref = collection(db, "user");
     const q = query(ref, where("role", "==", "lawyer"), where("approved", "==", true))
@@ -26,6 +30,7 @@ const AdminDashboardScreen = () => {
       });
       setApprovedLawyers(data);
     }
+    //get not approved lawyers
     const getNotApprovedLawyerData = async () => {
     const ref = collection(db, "user");
     const q = query(ref, where("role", "==", "lawyer"), where("approved", "==", false))
@@ -36,8 +41,43 @@ const AdminDashboardScreen = () => {
       });
       setNotApprovedLawyers(data);
     }
+    //get all users
+    const getAllUsers = async () => {
+    const ref = collection(db, "user");
+    const querySnapshot = await getDocs(ref)
+    let data: any[] = [];
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      setAllUsers(data);
+    }
+    //get analysts
+    const getAnalysts = async () => {
+    const ref = collection(db, "user");
+    const q = query(ref, where("role", "==", "analyst"))
+    let data: any[] = [];
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      setAnalysts(data);
+    }
+    //get lawyers
+    const getLawyers = async () => {
+    const ref = collection(db, "user");
+    const q = query(ref, where("role", "==", "lawyer"))
+    let data: any[] = [];
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() })
+      });
+      setLawyers(data);
+    }
     getApprovedLawyerData()
     getNotApprovedLawyerData()
+    getAllUsers()
+    getAnalysts()
+    getLawyers()
     
   }, []);
 
@@ -50,9 +90,9 @@ const AdminDashboardScreen = () => {
             <DashboardInfo role='Admin' firstname="Ravi" lastname="Adminrathne"/>
             
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
-                <DataCard type="Total users" number={23}/>
-                <DataCard type="Analysts" number={23}/>
-                <DataCard type="Lawyers" number={23}/>
+              {allUsers && allUsers?.length ? <DataCard type="Total users" number={allUsers?.length} p={`p-6`}/> : <DataCard type="Total users" number={0} p={`p-6`}/>}
+              {analysts && analysts?.length ? <DataCard type="Analysts" number={analysts?.length} p={`p-6`}/> : <DataCard type="Analysts" number={0} p={`p-6`}/>}
+              {lawyers && lawyers?.length ? <DataCard type="Lawyers" number={lawyers?.length} p={`p-6`}/> : <DataCard type="Lawyers" number={0} p={`p-6`}/>}
             </View>
             <View style={tailwind("mt-14")}>
                 <View>
