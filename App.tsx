@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import RootNavigator from "./navigator/RootNavigator";
 import { useFonts } from "expo-font";
 import { PlayfairDisplay_600SemiBold } from "@expo-google-fonts/playfair-display";
+import React from "react";
 
 const App = () => {
   let [fontsLoaded] = useFonts({
