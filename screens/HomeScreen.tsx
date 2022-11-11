@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }: any) => {
       <View style={tailwind("py-3")}>
         <Text style={tailwind("text-lg")}>Recent Polls</Text>
         <View style={tailwind("pt-3")}>
-          <PollSection />
+          <PollSection navigation={navigation} />
         </View>
       </View>
       <View style={tailwind("py-2")}>

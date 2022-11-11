@@ -5,7 +5,7 @@ import { PollType } from "../types";
 import PollCard from "./PollCard";
 import GestureRecognizer from "react-native-swipe-gestures";
 
-const PollSection = () => {
+const PollSection = ({ navigation }: any) => {
   const [polls, setPolls] = useState<PollType[]>();
   const [index, setIndex] = useState<number>(0);
   useEffect(() => {
@@ -45,7 +45,7 @@ const PollSection = () => {
           onSwipeRight={handleSwipeRight}
         >
           {polls.slice(index, index + 1).map((poll) => (
-            <PollCard key={poll.id} data={poll} />
+            <PollCard key={poll.id} data={poll} navigation={navigation} />
           ))}
         </GestureRecognizer>
       )}

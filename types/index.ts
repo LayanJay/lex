@@ -20,7 +20,7 @@ export type PollType = {
   id?: string;
   topic: string;
   description: string;
-  createAt: any;
+  createdAt: any;
   createdBy: string;
   endsOn: any;
 };
