@@ -32,9 +32,8 @@ const PollCard = ({ data, navigation }: Props) => {
   }, []);
 
   return (
-    //TODO: change navigation to Poll screen
     <TouchableOpacity
-      onPress={() => navigation.navigate("Home")}
+      onPress={() => navigation.navigate("ViewPoll", { item: data })}
       style={tailwind("w-full bg-grey-lighter px-4 py-4 rounded-sm")}
     >
       <Text style={tailwind("text-grey-darker")}>{topic}</Text>

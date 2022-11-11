@@ -18,7 +18,6 @@ export type RootStackParamList = {
   AddQuestion: undefined;
   AddQuestion1: undefined;
   AllQuestions: undefined;
-  SingleQuestion: { questionId: string };
   "Sign In": undefined;
   "Sign Up": undefined;
   //   add the other types for the pages
