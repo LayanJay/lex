@@ -11,12 +11,21 @@ export type QuestionType = {
 }
 
 export type AnswerType = {
-  id?: string
-  questionId: string
-  answer: string
-  createdBy: string
-  createdAt: any
-}
+  id?: string;
+  questionId: string;
+  answer: string;
+  createdBy: string;
+  createdAt: any;
+};
+
+export type PollType = {
+  id?: string;
+  topic: string;
+  description: string;
+  createdAt: any;
+  createdBy: string;
+  endsOn: any;
+};
 
 export type SignInProps = { email: string; password: string }
 export type SignUpProps = {
