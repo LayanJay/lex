@@ -2,13 +2,15 @@ import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { useTailwind } from "tailwind-rn";
 
+// TODO: @Nav: use flat list
+
 const ListPollsScreen = ({ navigation }: any) => {
   const tailwind = useTailwind();
   return (
     <View style={tailwind("p-4")}>
       <Text
         style={tailwind("py-4")}
-        onPress={() => navigation.navigate("AddQuestion")}
+        onPress={() => navigation.navigate("Create Poll")}
       >
         Recent polls
       </Text>
@@ -28,7 +30,21 @@ const ListPollsScreen = ({ navigation }: any) => {
           </View>
 
           <View style={tailwind("flex-grow p-2")}>
-            <Text>Why does std::vector copy-construct instead o</Text>
+            <Text
+              textBreakStrategy="balanced"
+              onPress={() =>
+                navigation.navigate("ViewPoll", { id: "skjhdfksjd" })
+              }
+            >
+              Why does std::vector copy-construct instead of move-construct when
+              the destructor may throw? dfsdfg df
+            </Text>
+          </View>
+
+          <View style={tailwind("p-3 flex items-center justify-center")}>
+            <Text style={{ opacity: 0.5 }} textBreakStrategy="balanced">
+              3m
+            </Text>
           </View>
         </View>
       </ScrollView>
