@@ -15,3 +15,12 @@ export type AnswerType = {
   createdBy: string;
   createdAt: any;
 };
+
+export type PollType = {
+  id?: string;
+  topic: string;
+  description: string;
+  createAt: any;
+  createdBy: string;
+  endsOn: any;
+};

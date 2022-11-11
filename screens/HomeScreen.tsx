@@ -1,31 +1,72 @@
-import { doc, setDoc } from 'firebase/firestore'
-import { View, Text, Button } from 'react-native'
-import { useTailwind } from 'tailwind-rn'
-import { db } from '../firebaseConfig'
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
+import { useTailwind } from "tailwind-rn";
+import React, { useEffect, useState } from "react";
+import QuestionCard from "../components/QuestionCard";
+import { getQuestions } from "../lib/queries/questions";
+import { QuestionType } from "../types";
+import PollCard from "../components/PollCard";
+import PollSection from "../components/PollSection";
 
 const HomeScreen = ({ navigation }: any) => {
-  const tailwind = useTailwind()
+  const tailwind = useTailwind();
+  const [questions, setQuestions] = useState<QuestionType[]>();
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  const first = async () => {
-    await setDoc(doc(db, 'cities', 'LA'), {
-      name: 'Los Angeles',
-      state: 'CA',
-      country: 'USA',
-    })
-  }
+  const getQuestionDetails = async () => {
+    setQuestions(await getQuestions());
+  };
+  useEffect(() => {
+    getQuestionDetails();
+  }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getQuestionDetails();
+    setRefreshing(false);
+  };
 
   return (
-    <View>
-      <Text style={tailwind('py-4 px-2')}>HomeScreen</Text>
-      <Button onPress={first} title='test' />
-      <Button
-        onPress={() => navigation.navigate('Sign In')}
-        title='Sign In'
-        color={'pink'}
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={tailwind("p-4 h-full")}
+    >
+      <Image
+        style={tailwind("w-full h-36 rounded-md")}
+        source={require("../assets/home-banner.png")}
       />
-    </View>
-  )
-}
+      <View style={tailwind("py-3")}>
+        <Text style={tailwind("text-lg")}>Recent Polls</Text>
+        <View style={tailwind("pt-3")}>
+          <PollSection />
+        </View>
+      </View>
+      <View style={tailwind("py-2")}>
+        <Text style={tailwind("text-lg")}>Recent Questions</Text>
+        <View style={tailwind("py-3")}>
+          {questions &&
+            questions.length > 0 &&
+            questions
+              .slice(0, 5)
+              .map((question: QuestionType) => (
+                <QuestionCard
+                  key={question.id}
+                  data={question}
+                  navigation={navigation}
+                />
+              ))}
+        </View>
+      </View>
+    </ScrollView>
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;

@@ -43,7 +43,7 @@ const QuestionCard = ({ data, navigation }: Props) => {
       }}
     >
       <View style={tailwind("pl-1 pr-6 flex items-center")}>
-        <AntDesign name={voted ? "like1" : "like2"} size={24} color="black" />
+        <AntDesign name={voted ? "like1" : "like2"} size={20} color="black" />
         <Text style={tailwind("text-xs pt-1")}> {upvotes.length}</Text>
       </View>
       <Text style={tailwind("w-3/4 px-2")}>{title}</Text>
