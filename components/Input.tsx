@@ -46,7 +46,7 @@ const Input = ({
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              multiline
+              multiline={multiline}
             />
           )}
           name={name}
