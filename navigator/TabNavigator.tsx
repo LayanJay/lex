@@ -7,6 +7,8 @@ import ListPollsScreen from "../screens/ListPollsScreen";
 import LawyerDashboardScreen from "../screens/LawyerDashboardScreen";
 import AdminDashboardScreen from "../screens/AdminDashboardScreen";
 import UserDashboardScreen from "../screens/UserDashboardScreen";
+import AnalystDashboardScreen from "../screens/AnalystDashboardScreen";
+import ViewLawyerProfileScreen from "../screens/ViewLawyerProfileScreen";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
@@ -18,7 +20,7 @@ export type TabStackParamList = {
   Home: undefined;
   Forum: undefined;
   Polls: undefined;
-  Lawyer: undefined;
+  Profile: undefined;
   // add other tab types here
 };
 
@@ -70,7 +72,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Lawyer"
+        name="Profile"
         component={LawyerDashboardScreen}
         options={{
           tabBarIcon: () => <Octicons name="person" size={24} color="white" />,
