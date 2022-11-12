@@ -13,19 +13,19 @@ import { useAuth } from '../store'
 type Props = {}
 
 const DashboardScreen = (props: Props) => {
-    const tailwind = useTailwind()
-    const [user, signOut] = useAuth((state) => [state.user, state.signOut], shallow)
-   return (
+  const tailwind = useTailwind()
+  const [user, signOut] = useAuth(state => [state.user, state.signOut], shallow)
+  return (
     <View>
-        {user && user?.role === "user" ? <UserDashboardScreen /> : null}
-       {user && user?.role === "analyst" ? <AnalystDashboardScreen /> : null}
-       {user && user?.role === "lawyer" ? <LawyerDashboardScreen /> : null}
-       {user && user?.role === "admin" ? <AdminDashboardScreen /> : null}
-       <View style={tailwind("p-4")}>
-        <Button onPress={signOut} text={'Sign out'}/>
-       </View>
+      {user && user?.role === 'user' ? <UserDashboardScreen /> : null}
+      {user && user?.role === 'analyst' ? <AnalystDashboardScreen /> : null}
+      {user && user?.role === 'lawyer' ? <LawyerDashboardScreen /> : null}
+      {user && user?.role === 'admin' ? <AdminDashboardScreen /> : null}
+      <View style={tailwind('p-4')}>
+        <Button onPress={signOut} text={'Sign out'} />
+      </View>
     </View>
-   )
+  )
 }
 
-export default withProtected(DashboardScreen);
+export default withProtected(DashboardScreen)
