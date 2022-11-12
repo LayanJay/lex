@@ -27,7 +27,6 @@ dayjs.extend(relativeTime);
 
 const ListPollsScreen = ({ navigation }: any) => {
   const { user } = useAuth();
-  console.log(user);
 
   const Item = ({ item }: any) => (
     <View style={tailwind("w-full flex flex-row bg-gray-200 rounded-md mb-4")}>
@@ -106,7 +105,6 @@ const ListPollsScreen = ({ navigation }: any) => {
           },
         ];
 
-        console.log(fml);
         setData(fml);
         setRefreshing(false);
       });
