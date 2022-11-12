@@ -53,9 +53,13 @@ export type SignUpAnalystProps = {
 }
 
 export type AuthSliceType = {
-  user: (User & IdTokenResult) | null
+  user: (User & IdTokenResult & { role: 'user' | 'lawyer' | 'analyst' }) | null
   loading: boolean
-  setUser: (user: (User & IdTokenResult) | null) => void
+  setUser: (
+    user:
+      | (User & IdTokenResult & { role: 'user' | 'lawyer' | 'analyst' })
+      | null
+  ) => void
   setLoading: (loading: boolean) => void
   signIn: ({}: SignInProps) => Promise<User>
   signUp: ({}: SignUpProps) => Promise<User>
