@@ -4,17 +4,13 @@ import { useLayoutEffect } from "react";
 import AllQuestionsScreen from "../screens/AllQuestionsScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ListPollsScreen from "../screens/ListPollsScreen";
-import LawyerDashboardScreen from "../components/dashboards/LawyerDashboardScreen";
-import AdminDashboardScreen from "../components/dashboards/AdminDashboardScreen";
-import UserDashboardScreen from "../components/dashboards/UserDashboardScreen";
-import AnalystDashboardScreen from "../components/dashboards/AnalystDashboardScreen";
-import ViewLawyerProfileScreen from "../screens/ViewLawyerProfileScreen";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useTailwind } from "tailwind-rn/dist";
+import DashboardScreen from "../screens/DashboardScreen";
 
 export type TabStackParamList = {
   Home: undefined;
@@ -73,7 +69,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={AnalystDashboardScreen}
+        component={DashboardScreen}
         options={{
           tabBarIcon: () => <Octicons name="person" size={24} color="white" />,
         }}
