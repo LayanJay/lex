@@ -4,8 +4,8 @@ import { useTailwind } from 'tailwind-rn/dist';
 
 type Props = {
     role: string;
-    firstname: string;
-    lastname: string;
+    firstname: string | any;
+    lastname: string | any;
 }
 
 const DashboardInfo = ({role, firstname, lastname}: Props) => {

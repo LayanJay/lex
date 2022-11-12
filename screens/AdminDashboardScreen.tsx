@@ -15,6 +15,7 @@ import { QuestionType } from "../types";
 import QuestionCard from "../components/QuestionCard";
 import LawyerCard from "../components/LawyerCard";
 import DashboardInfo from "../components/DashboardInfo";
+import { useAuth } from "../store";
 
 const AdminDashboardScreen = () => {
   const [notApprovedLawyers, setNotApprovedLawyers] = useState<any[]>();
@@ -23,11 +24,12 @@ const AdminDashboardScreen = () => {
   const [analysts, setAnalysts] = useState<any[]>();
   const [lawyers, setLawyers] = useState<any[]>();
   const [limit, setLimit] = useState<number>(3);
+  const user = useAuth((state) => state.user)
 
   useEffect(() => {
     //get approved lawyers
     const getApprovedLawyerData = async () => {
-      const ref = collection(db, "user");
+      const ref = collection(db, "users");
       const q = query(
         ref,
         where("role", "==", "lawyer"),
@@ -42,7 +44,7 @@ const AdminDashboardScreen = () => {
     };
     //get not approved lawyers
     const getNotApprovedLawyerData = async () => {
-      const ref = collection(db, "user");
+      const ref = collection(db, "users");
       const q = query(
         ref,
         where("role", "==", "lawyer"),
@@ -57,7 +59,7 @@ const AdminDashboardScreen = () => {
     };
     //get all users
     const getAllUsers = async () => {
-      const ref = collection(db, "user");
+      const ref = collection(db, "users");
       const querySnapshot = await getDocs(ref);
       let data: any[] = [];
       querySnapshot.forEach((doc) => {
@@ -67,7 +69,7 @@ const AdminDashboardScreen = () => {
     };
     //get analysts
     const getAnalysts = async () => {
-      const ref = collection(db, "user");
+      const ref = collection(db, "users");
       const q = query(ref, where("role", "==", "analyst"));
       let data: any[] = [];
       const querySnapshot = await getDocs(q);
@@ -78,7 +80,7 @@ const AdminDashboardScreen = () => {
     };
     //get lawyers
     const getLawyers = async () => {
-      const ref = collection(db, "user");
+      const ref = collection(db, "users");
       const q = query(ref, where("role", "==", "lawyer"));
       let data: any[] = [];
       const querySnapshot = await getDocs(q);

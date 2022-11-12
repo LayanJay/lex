@@ -3,7 +3,7 @@ import React from "react";
 import { useTailwind } from "tailwind-rn/dist";
 import DataCard from "../components/DataCard";
 import { useEffect, useState } from "react";
-import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { QuestionType } from "../types";
 import QuestionCard from "../components/QuestionCard";
@@ -11,6 +11,7 @@ import DashboardInfo from "../components/DashboardInfo";
 import DashboardVotesCard from "../components/DashboardVotesCard";
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import dayjs from "dayjs";
+import { useAuth } from "../store";
 
  dayjs.extend(IsSameOrBefore)
 
@@ -20,11 +21,13 @@ const AnalystDashboardScreen = () => {
     const [inactiveLimit, setInactiveLimit] = useState<number>(3);
     const [activePolls, setActivePolls] = useState<any[]>();
     const [inActivePolls, setInActivePolls] = useState<any[]>();
+    const user = useAuth((state) => state.user)
+    const [userData, setUserData] = useState<any>()
 
     useEffect(() => {
     const getPollData = async () => {
     const ref = collection(db, "polls");
-    const q = query(ref, where("createdBy", "==", "7JwLj0rwO1uIkBg5lBZi"))
+    const q = query(ref, where("createdBy", "==", `${user?.uid}`))
     let data: any[] = [];
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
@@ -48,11 +51,12 @@ const AnalystDashboardScreen = () => {
       inActivePolls()
     
   }, [polls])
+
     const tailwind = useTailwind();
 
     return (
         <View style={tailwind("p-4")}>
-           <DashboardInfo firstname="Saul" lastname="Goodman" role="Analyst"/>
+           <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role="Analyst"/>
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
               {polls && polls?.length ? <DataCard type="Polls created" number={polls?.length} p={`p-5`} /> : <DataCard type="Polls created" number={0} p={`p-5`} />}
               {activePolls && activePolls?.length ? <DataCard type="Active Polls" number={activePolls?.length} p={`p-5`}/> : <DataCard type="Active Polls" number={0} p={`p-5`}/>}
