@@ -3,119 +3,189 @@ import React from "react";
 import { useTailwind } from "tailwind-rn/dist";
 import DataCard from "../DataCard";
 import { useEffect, useState } from "react";
-import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { QuestionType } from "../../types";
 import QuestionCard from "../QuestionCard";
 import DashboardInfo from "../DashboardInfo";
 import DashboardVotesCard from "../DashboardVotesCard";
-import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import IsSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import dayjs from "dayjs";
 import { useAuth } from "../../store";
 
- dayjs.extend(IsSameOrBefore)
+dayjs.extend(IsSameOrBefore);
 
 const AnalystDashboardScreen = () => {
-    const [polls, setPolls] = useState<any[]>();
-    const [limit, setLimit] = useState<number>(3)
-    const [inactiveLimit, setInactiveLimit] = useState<number>(3);
-    const [activePolls, setActivePolls] = useState<any[]>();
-    const [inActivePolls, setInActivePolls] = useState<any[]>();
-    const user = useAuth((state) => state.user)
-    const [userData, setUserData] = useState<any>()
+  const [polls, setPolls] = useState<any[]>();
+  const [limit, setLimit] = useState<number>(3);
+  const [inactiveLimit, setInactiveLimit] = useState<number>(3);
+  const [activePolls, setActivePolls] = useState<any[]>();
+  const [inActivePolls, setInActivePolls] = useState<any[]>();
+  const user = useAuth((state) => state.user);
+  const [userData, setUserData] = useState<any>();
 
-    useEffect(() => {
+  useEffect(() => {
     const getPollData = async () => {
-    const ref = collection(db, "polls");
-    const q = query(ref, where("createdBy", "==", `${user?.uid}`))
-    let data: any[] = [];
-    const querySnapshot = await getDocs(q)
-    querySnapshot.forEach((doc) => {
+      const ref = collection(db, "polls");
+      const q = query(ref, where("createdBy", "==", `${user?.uid}`));
+      let data: any[] = [];
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
         data.push({ id: doc.id, ...doc.data() });
       });
       setPolls(data);
-    }
-    getPollData()
-    
+    };
+    getPollData();
   }, []);
 
   useEffect(() => {
     const activePolls = () => {
-      setActivePolls(polls?.filter((poll) => dayjs(poll?.endsOn.toDate()).isSameOrBefore(dayjs())))
-    }
+      setActivePolls(
+        polls?.filter((poll) =>
+          dayjs(poll?.endsOn.toDate()).isSameOrBefore(dayjs())
+        )
+      );
+    };
     const inActivePolls = () => {
-      setInActivePolls(polls?.filter((poll) => dayjs(poll?.endsOn.toDate()).isAfter(dayjs())))
-    }
-   
-      activePolls()
-      inActivePolls()
-    
-  }, [polls])
+      setInActivePolls(
+        polls?.filter((poll) => dayjs(poll?.endsOn.toDate()).isAfter(dayjs()))
+      );
+    };
 
-  
-    const tailwind = useTailwind();
+    activePolls();
+    inActivePolls();
+  }, [polls]);
 
-    return (
-        <View style={tailwind("p-4")}>
-           <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role as string}/>
-            <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
-              {polls && polls?.length > 0 ? <DataCard type="Polls created" number={polls?.length} p={`p-5`} /> : null}
-              {activePolls && activePolls?.length > 0 ? <DataCard type="Active Polls" number={activePolls?.length} p={`p-5`}/> : null}
-                {inActivePolls && inActivePolls?.length > 0 ? <DataCard type="Inactive Polls" number={inActivePolls?.length} p={`p-5`}/> : null}
+  const tailwind = useTailwind();
+
+  return (
+    <View style={tailwind("p-4")}>
+      <DashboardInfo
+        firstname={user?.displayName?.split(" ")[0]}
+        lastname={user?.displayName?.split(" ")[1]}
+        role={user?.role as string}
+      />
+      <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
+        {polls && polls?.length > 0 ? (
+          <DataCard type="Polls created" number={polls?.length} p={`p-5`} />
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
+        {activePolls && activePolls?.length > 0 ? (
+          <DataCard
+            type="Active Polls"
+            number={activePolls?.length}
+            p={`p-5`}
+          />
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
+        {inActivePolls && inActivePolls?.length > 0 ? (
+          <DataCard
+            type="Inactive Polls"
+            number={inActivePolls?.length}
+            p={`p-5`}
+          />
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
+      </View>
+      <View style={tailwind("mt-14")}>
+        <View>
+          <Text style={tailwind("font-semibold text-xl pb-3")}>
+            Recent Polls
+          </Text>
+        </View>
+
+        <ScrollView>
+          {polls && polls?.length > 0 ? (
+            polls
+              .filter((poll) =>
+                dayjs(poll?.endsOn.toDate()).isSameOrBefore(dayjs())
+              )
+              .slice(0, limit)
+              .map((poll, i) => <DashboardVotesCard key={i} data={poll} />)
+          ) : (
+            <View
+              style={tailwind(
+                "mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center"
+              )}
+            >
+              <Text style={tailwind("w-3/4")}>Nothing here yet..</Text>
             </View>
-            <View style={tailwind("mt-14")}>
-                <View>
-                    <Text style={tailwind("font-semibold text-xl pb-3")}>Recent Polls</Text>
-                </View>
-                
-                    <ScrollView>
-        {polls && polls?.length > 0 ?
-          polls.filter((poll) => dayjs(poll?.endsOn.toDate()).isSameOrBefore(dayjs())).slice(0, limit).map((poll, i) => (
-            <DashboardVotesCard key={i} data={poll} />
-          )): <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
-            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
-      </ScrollView>
-      {polls && polls?.length > limit ? (
-        <View style={tailwind("pt-2 flex flex-row justify-center")}>
+          )}
+        </ScrollView>
+        {polls && polls?.length > limit ? (
+          <View style={tailwind("pt-2 flex flex-row justify-center")}>
             {limit != 3 ? (
-                 <Text onPress={() => setLimit(3)} style={tailwind("font-semibold text-sm")}>
+              <Text
+                onPress={() => setLimit(3)}
+                style={tailwind("font-semibold text-sm")}
+              >
                 See newer
-            </Text>
-            ) : ( <Text onPress={() => setLimit(-1)} style={tailwind("font-semibold text-sm")}>
+              </Text>
+            ) : (
+              <Text
+                onPress={() => setLimit(-1)}
+                style={tailwind("font-semibold text-sm")}
+              >
                 See older
-            </Text>)}
-           
+              </Text>
+            )}
+          </View>
+        ) : (
+          ""
+        )}
+      </View>
+      <View style={tailwind("mt-14")}>
+        <View>
+          <Text style={tailwind("font-semibold text-xl pb-3")}>
+            Inactive Polls
+          </Text>
         </View>
-      ) : ('')}
-                
+
+        <ScrollView>
+          {polls && polls?.length > 0 ? (
+            polls
+              .filter((poll) => dayjs(poll?.endsOn.toDate()).isAfter(dayjs()))
+              .slice(0, inactiveLimit)
+              .map((poll, i) => <DashboardVotesCard key={i} data={poll} />)
+          ) : (
+            <View
+              style={tailwind(
+                "mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center"
+              )}
+            >
+              <Text style={tailwind("w-3/4")}>Nothing here yet..</Text>
             </View>
-            <View style={tailwind("mt-14")}>
-                <View>
-                    <Text style={tailwind("font-semibold text-xl pb-3")}>Inactive Polls</Text>
-                </View>
-                
-                    <ScrollView>
-        {polls && polls?.length > 0 ?
-          polls.filter((poll) => dayjs(poll?.endsOn.toDate()).isAfter(dayjs())).slice(0, inactiveLimit).map((poll, i) => (
-            <DashboardVotesCard key={i} data={poll} />
-          )) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
-            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View> }
-      </ScrollView>
-                {polls && polls?.length > limit ? (
-        <View style={tailwind("pt-2 flex flex-row justify-center")}>
+          )}
+        </ScrollView>
+        {polls && polls?.length > limit ? (
+          <View style={tailwind("pt-2 flex flex-row justify-center")}>
             {inactiveLimit != 3 ? (
-                 <Text onPress={() => setInactiveLimit(3)} style={tailwind("font-semibold text-sm")}>
+              <Text
+                onPress={() => setInactiveLimit(3)}
+                style={tailwind("font-semibold text-sm")}
+              >
                 See newer
-            </Text>
-            ) : ( <Text onPress={() => setInactiveLimit(-1)} style={tailwind("font-semibold text-sm")}>
+              </Text>
+            ) : (
+              <Text
+                onPress={() => setInactiveLimit(-1)}
+                style={tailwind("font-semibold text-sm")}
+              >
                 See older
-            </Text>)}
-           
-        </View>
-      ) : ('')}
-            </View>
-        </View>
-    );
+              </Text>
+            )}
+          </View>
+        ) : (
+          ""
+        )}
+      </View>
+    </View>
+  );
 };
 
 export default AnalystDashboardScreen;
