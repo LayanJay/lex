@@ -1,7 +1,7 @@
 import { ScrollView, Text, View } from "react-native";
 import React from "react";
 import { useTailwind } from "tailwind-rn/dist";
-import DataCard from "../components/DataCard";
+import DataCard from "../DataCard";
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -10,12 +10,12 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { QuestionType } from "../types";
-import QuestionCard from "../components/QuestionCard";
-import LawyerCard from "../components/LawyerCard";
-import DashboardInfo from "../components/DashboardInfo";
-import { useAuth } from "../store";
+import { db } from "../../firebaseConfig";
+import { QuestionType } from "../../types";
+import QuestionCard from "../QuestionCard";
+import LawyerCard from "../LawyerCard";
+import DashboardInfo from "../DashboardInfo";
+import { useAuth } from "../../store";
 
 const AdminDashboardScreen = () => {
   const [notApprovedLawyers, setNotApprovedLawyers] = useState<any[]>();

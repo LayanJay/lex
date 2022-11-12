@@ -1,16 +1,17 @@
 import { ScrollView, Text, View } from "react-native";
 import React from "react";
 import { useTailwind } from "tailwind-rn/dist";
-import DataCard from "../components/DataCard";
+import DataCard from "../DataCard";
 import { useEffect, useState } from "react";
 import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { QuestionType } from "../types";
-import QuestionCard from "../components/QuestionCard";
-import DashboardInfo from "../components/DashboardInfo";
-import DashboardQuestionCard from "../components/DashboardQuestionCard";
+import { db } from "../../firebaseConfig";
+import { QuestionType } from "../../types";
+import QuestionCard from "../QuestionCard";
+import DashboardInfo from "../DashboardInfo";
+import DashboardQuestionCard from "../DashboardQuestionCard";
 import { async } from "@firebase/util";
-import DashboardVotesCard from "../components/DashboardVotesCard";
+import DashboardVotesCard from "../DashboardVotesCard";
+import { useAuth } from "../../store";
 
 const LawyerDashboardScreen = () => {
     const [answers, setAnswers] = useState<any[]>();
@@ -19,12 +20,13 @@ const LawyerDashboardScreen = () => {
     const [votelimit, setVoteLimit] = useState<number>(3);
     const [polls, setPolls] = useState<any[]>();
     const [votes, setVotes] = useState<any[]>();
+    const user = useAuth((state) => state.user)
 
 
     useEffect(() => {
     const getAnswers = async () => {
     const ref = collection(db, "answers");
-    const q = query(ref, where("createdBy", "==", "7JwLj0rwO1uIkBg5lBZi"))
+    const q = query(ref, where("createdBy", "==", `${user?.uid}`))
     let data: any[] = [];
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
@@ -62,7 +64,7 @@ const LawyerDashboardScreen = () => {
   useEffect(() => {
     const getPollData = async () => {
       const ref = collection(db, "poll-responses");
-    const q = query(ref, where("userId", "==", "7JwLj0rwO1uIkBg5lBZi"))
+    const q = query(ref, where("userId", "==", `${user?.uid}`))
     let data: any[] = [];
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
@@ -104,7 +106,7 @@ const LawyerDashboardScreen = () => {
 
     return (
         <View style={tailwind("p-4")}>
-             <DashboardInfo firstname="Saul" lastname="Goodman" role="Lawyer"/>
+             <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role} />
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
               {answers && answers?.length ? <DataCard type="Answers" number={answers?.length} p={`p-6`}/> : <DataCard type="Answers" number={0} p={`p-6`}/>}
                 {polls && polls?.length ? <DataCard type="Votes" number={polls?.length} p={`p-7`}/> : <DataCard type="Votes" number={0} p={`p-7`}/>}

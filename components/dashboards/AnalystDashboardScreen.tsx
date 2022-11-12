@@ -1,17 +1,17 @@
 import { ScrollView, Text, View } from "react-native";
 import React from "react";
 import { useTailwind } from "tailwind-rn/dist";
-import DataCard from "../components/DataCard";
+import DataCard from "../DataCard";
 import { useEffect, useState } from "react";
 import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { QuestionType } from "../types";
-import QuestionCard from "../components/QuestionCard";
-import DashboardInfo from "../components/DashboardInfo";
-import DashboardVotesCard from "../components/DashboardVotesCard";
+import { db } from "../../firebaseConfig";
+import { QuestionType } from "../../types";
+import QuestionCard from "../QuestionCard";
+import DashboardInfo from "../DashboardInfo";
+import DashboardVotesCard from "../DashboardVotesCard";
 import IsSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import dayjs from "dayjs";
-import { useAuth } from "../store";
+import { useAuth } from "../../store";
 
  dayjs.extend(IsSameOrBefore)
 
@@ -52,11 +52,12 @@ const AnalystDashboardScreen = () => {
     
   }, [polls])
 
+  
     const tailwind = useTailwind();
 
     return (
         <View style={tailwind("p-4")}>
-           <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role="Analyst"/>
+           <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role}/>
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
               {polls && polls?.length ? <DataCard type="Polls created" number={polls?.length} p={`p-5`} /> : <DataCard type="Polls created" number={0} p={`p-5`} />}
               {activePolls && activePolls?.length ? <DataCard type="Active Polls" number={activePolls?.length} p={`p-5`}/> : <DataCard type="Active Polls" number={0} p={`p-5`}/>}

@@ -18,7 +18,7 @@ const DashboardInfo = ({role, firstname, lastname}: Props) => {
                     <Text style={tailwind("text-2xl font-semibold")}>Dashboard</Text>
                     <Text style={tailwind("text-lg text-gray-400")}>{firstname} {lastname}</Text>
                     <View style={tailwind("bg-gray-400 flex flex-row justify-center")}>
-                        <Text style={tailwind("text-xs font-light ")}>{role}</Text>
+                        <Text style={tailwind("text-xs font-light capitalize")}>{role}</Text>
                     </View>
                 </View>
                 <View>
