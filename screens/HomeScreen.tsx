@@ -1,17 +1,9 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  RefreshControl,
-} from 'react-native'
+import { View, Text, Image, ScrollView, RefreshControl } from 'react-native'
 import { useTailwind } from 'tailwind-rn'
 import React, { useEffect, useState } from 'react'
 import QuestionCard from '../components/QuestionCard'
 import { getQuestions } from '../lib/queries/questions'
 import { QuestionType } from '../types'
-import PollCard from '../components/PollCard'
 import PollSection from '../components/PollSection'
 import Button from '../components/Button'
 import withProtected from '../hooks/auth/withProtected'

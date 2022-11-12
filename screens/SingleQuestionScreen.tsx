@@ -27,6 +27,7 @@ import {
   updateUpvote,
 } from "../lib/mutations/questions";
 import dayjs from "dayjs";
+import { useAuth } from "../store";
 
 type QuestionScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -40,11 +41,8 @@ type Props = {
   navigation: QuestionScreenNavigationProp;
 };
 
-//TODO: Replace with actual user data
-const user = "7JwLj0rwO1uIkBg5lBZi";
-const userName = "Saul GoodMan";
-
 const SingleQuestionScreen = ({ route, navigation }: Props) => {
+  const { user } = useAuth();
   const tailwind = useTailwind();
   const {
     control,
@@ -89,7 +87,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
 
   useEffect(() => {
     if (question && question.upvotes) {
-      setVoted(question.upvotes.includes(user));
+      setVoted(question.upvotes.includes(user?.uid as string));
     }
   }, [question, question?.upvotes, questionId]);
 
@@ -97,7 +95,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
     const answer: AnswerType = {
       questionId,
       answer: data.reply,
-      createdBy: user,
+      createdBy: user?.uid as string,
       createdAt: serverTimestamp(),
     };
 
@@ -131,7 +129,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
           </Text>
           <View style={tailwind("flex flex-row justify-between w-full")}>
             <Text style={tailwind("text-xs pt-1 text-grey-dark")}>
-              by {userName}
+              by {user?.displayName}
             </Text>
             <Text style={tailwind("text-xs pt-1 text-grey-dark")}>
               {dayjs(question?.createdAt.toDate()).format("DD-MM-YYYY")}
@@ -148,7 +146,11 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
                 size={24}
                 color="black"
                 onPress={() => {
-                  handleUpdateVote(questionId, user, voted ? "remove" : "add");
+                  handleUpdateVote(
+                    questionId,
+                    user?.uid as string,
+                    voted ? "remove" : "add"
+                  );
                 }}
               />
 
@@ -184,7 +186,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
             >
               <Text style={tailwind("text-white text-lg")}>Post</Text>
             </Pressable>
-            {question?.createdBy === user && (
+            {question?.createdBy === user?.uid && (
               <Pressable
                 style={tailwind(
                   "bg-black text-white flex flex-row items-center justify-center py-2 mb-3 bg-red-800"
