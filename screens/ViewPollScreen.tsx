@@ -20,11 +20,12 @@ import {
 import { db } from "../firebaseConfig";
 import { getUserById } from "../lib/queries/user";
 import { User } from "firebase/auth";
+import { useAuth } from "../store";
 dayjs.extend(relativeTime);
 
 const ViewPollScreen = ({ navigation, route }: any) => {
   // TODO: Replace with actual ID
-  const USER_ID = "7JwLj0rwO1uIkBg5lBZi";
+  const { user } = useAuth();
 
   const tailwind = useTailwind();
   const { item } = route.params;
@@ -89,7 +90,7 @@ const ViewPollScreen = ({ navigation, route }: any) => {
 
     getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        if (doc.data().userId == USER_ID) setVoted(true);
+        if (doc.data().userId == user?.uid) setVoted(true);
 
         data.push({ id: doc.id, ...doc.data() });
       });
@@ -102,7 +103,7 @@ const ViewPollScreen = ({ navigation, route }: any) => {
 
     setVoted(true);
     const data = {
-      userId: USER_ID,
+      userId: user?.uid,
       pollId: item.id,
       optionId: optId,
     };
