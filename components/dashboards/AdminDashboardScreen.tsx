@@ -107,13 +107,13 @@ const AdminDashboardScreen = () => {
       <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
         {allUsers && allUsers?.length ? (
           <DataCard type="Total users" number={allUsers?.length} p={`p-6`} />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
         {analysts && analysts?.length ? (
           <DataCard type="Analysts" number={analysts?.length} p={`p-6`} />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
         {lawyers && lawyers?.length ? (
           <DataCard type="Lawyers" number={lawyers?.length} p={`p-6`} />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
       </View>
       <View style={tailwind("mt-14")}>
         <View>
