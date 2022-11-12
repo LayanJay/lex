@@ -7,6 +7,7 @@ import {
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import create from 'zustand'
 import { auth, db } from '../firebaseConfig'
+import { getUserById } from '../lib/queries/user'
 import { AuthSliceType } from '../types'
 
 export const useAuth = create<AuthSliceType>(set => ({
@@ -45,8 +46,8 @@ export const useAuth = create<AuthSliceType>(set => ({
           uid: userCred.user.uid,
         })
 
-        const newUserCred = await userCred.user.getIdTokenResult(true)
-        set({ user: { ...userCred.user, ...newUserCred }, loading: false })
+        const userData = await getUserById(userCred.user.uid)
+        set({ user: { ...userCred.user, ...userData }, loading: false })
         return userCred['user']
       })
       .catch(err => {
@@ -80,8 +81,8 @@ export const useAuth = create<AuthSliceType>(set => ({
           uid: userCred.user.uid,
         })
 
-        const newUserCred = await userCred.user.getIdTokenResult(true)
-        set({ user: { ...userCred.user, ...newUserCred }, loading: false })
+        const userData = await getUserById(userCred.user.uid)
+        set({ user: { ...userCred.user, ...userData }, loading: false })
         return userCred['user']
       })
       .catch(err => {
@@ -107,8 +108,8 @@ export const useAuth = create<AuthSliceType>(set => ({
           uid: userCred.user.uid,
         })
 
-        const newUserCred = await userCred.user.getIdTokenResult(true)
-        set({ user: { ...userCred.user, ...newUserCred }, loading: false })
+        const userData = await getUserById(userCred.user.uid)
+        set({ user: { ...userCred.user, ...userData }, loading: false })
         return userCred['user']
       })
       .catch(err => {
