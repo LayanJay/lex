@@ -54,6 +54,68 @@ export const useAuth = create<AuthSliceType>(set => ({
       })
   },
 
+  signUpLawyer: async ({
+    firstname,
+    lastname,
+    firm,
+    university,
+    email,
+    password,
+  }) => {
+    return await createUserWithEmailAndPassword(auth, email, password)
+      .then(async userCred => {
+        await updateProfile(userCred['user'], {
+          displayName: `${firstname} ${lastname}`,
+        })
+
+        const docRef = doc(db, 'users', userCred.user.uid)
+        await setDoc(docRef, {
+          email,
+          firstname,
+          lastname,
+          firm,
+          university,
+          joinedDate: serverTimestamp(),
+          role: 'lawyer',
+          uid: userCred.user.uid,
+        })
+
+        const newUserCred = await userCred.user.getIdTokenResult(true)
+        set({ user: { ...userCred.user, ...newUserCred }, loading: false })
+        return userCred['user']
+      })
+      .catch(err => {
+        throw err
+      })
+  },
+
+  signUpAnalyst: async ({ firstname, lastname, firm, email, password }) => {
+    return await createUserWithEmailAndPassword(auth, email, password)
+      .then(async userCred => {
+        await updateProfile(userCred['user'], {
+          displayName: `${firstname} ${lastname}`,
+        })
+
+        const docRef = doc(db, 'users', userCred.user.uid)
+        await setDoc(docRef, {
+          email,
+          firstname,
+          lastname,
+          firm,
+          joinedDate: serverTimestamp(),
+          role: 'analyst',
+          uid: userCred.user.uid,
+        })
+
+        const newUserCred = await userCred.user.getIdTokenResult(true)
+        set({ user: { ...userCred.user, ...newUserCred }, loading: false })
+        return userCred['user']
+      })
+      .catch(err => {
+        throw err
+      })
+  },
+
   signOut: async () => {
     await signOut(auth).catch(err => {
       throw err

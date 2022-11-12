@@ -13,6 +13,7 @@ web-build/
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+yarn-*.log
 
 # macOS
 .DS_Store

@@ -15,9 +15,9 @@ import { useAuth } from '../store'
 import { useForm } from 'react-hook-form'
 import Button from '../components/Button'
 
-const SignUp = ({ navigation }: any) => {
+const SignUpLawyer = ({ navigation }: any) => {
   const tailwind = useTailwind()
-  const signUp = useAuth(s => s.signUp)
+  const signUp = useAuth(s => s.signUpLawyer)
   const {
     control,
     handleSubmit,
@@ -26,8 +26,8 @@ const SignUp = ({ navigation }: any) => {
     defaultValues: {
       firstname: '',
       lastname: '',
-      occupation: '',
-      nic: '',
+      firm: '',
+      university: '',
       email: '',
       password: '',
     },
@@ -50,7 +50,7 @@ const SignUp = ({ navigation }: any) => {
               'font-primary-600 font-semibold text-4xl text-center mb-4'
             )}
           >
-            Sign Up
+            Sign Up as a Lawyer
           </Text>
 
           <Input
@@ -83,9 +83,9 @@ const SignUp = ({ navigation }: any) => {
             labelStyle={tailwind('mb-1')}
             control={control as any}
             errors={errors}
-            name='occupation'
-            label='Occupation'
-            placeholder='Ex: Lawyer'
+            name='firm'
+            label='Law Firm'
+            placeholder='Ex: ABC Law Firm'
             registerOptions={{
               required: '*Required',
             }}
@@ -96,9 +96,9 @@ const SignUp = ({ navigation }: any) => {
             labelStyle={tailwind('mb-1')}
             control={control as any}
             errors={errors}
-            name='nic'
-            label='NIC'
-            placeholder='Ex: 998745632v'
+            name='university'
+            label='Graduated University'
+            placeholder='Ex: SLIIT'
             registerOptions={{
               required: '*Required',
             }}
@@ -128,7 +128,6 @@ const SignUp = ({ navigation }: any) => {
             errors={errors}
             name='password'
             label='Password'
-            secureTextEntry={true}
             placeholder='Ex: ********'
             registerOptions={{
               required: '*Required',
@@ -145,12 +144,12 @@ const SignUp = ({ navigation }: any) => {
           <Button onPress={onSubmit} text='Sign Up' loading={isSubmitting} />
           <View style={tailwind('flex items-center pt-6')}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('SignUpLawyer')}
+              onPress={() => navigation.navigate('Sign Up')}
               style={tailwind('mb-2')}
             >
               <View>
                 <Text style={tailwind('font-semibold text-gray-500')}>
-                  Sign Up as a Lawyer
+                  Sign Up as an User
                 </Text>
               </View>
             </TouchableOpacity>
@@ -183,4 +182,4 @@ const SignUp = ({ navigation }: any) => {
   )
 }
 
-export default SignUp
+export default SignUpLawyer

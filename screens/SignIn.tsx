@@ -21,7 +21,7 @@ const SignIn = ({ navigation }: any) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       email: '',
@@ -74,6 +74,7 @@ const SignIn = ({ navigation }: any) => {
             errors={errors}
             name='password'
             label='Password'
+            secureTextEntry={true}
             placeholder='Ex: ********'
             registerOptions={{
               required: '*Required',
@@ -87,7 +88,7 @@ const SignIn = ({ navigation }: any) => {
               },
             }}
           />
-          <Button onPress={onSubmit} text='Sign In' />
+          <Button onPress={onSubmit} text='Sign In' loading={isSubmitting} />
           <View style={tailwind('flex items-center pt-20')}>
             <Text style={tailwind('text-sm text-gray-400')}>
               Don't have an account?
