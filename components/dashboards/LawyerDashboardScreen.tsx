@@ -124,9 +124,9 @@ const LawyerDashboardScreen = ({navigation}:any) => {
         <View style={tailwind("p-4")}>
              <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role as string} />
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
-              {answers && answers?.length ? <DataCard type="Answers" number={answers?.length} p={`p-6`}/> : <DataCard type="Answers" number={0} p={`p-6`}/>}
-              {askedQuestions && askedQuestions?.length ? <DataCard type="Questions" number={askedQuestions?.length} p={`p-6`}/> : <DataCard type="Questions" number={0} p={`p-6`}/>}
-                {polls && polls?.length ? <DataCard type="Votes" number={polls?.length} p={`p-7`}/> : <DataCard type="Votes" number={0} p={`p-7`}/>}
+              {answers && answers?.length ? <DataCard type="Answers" number={answers?.length} p={`p-6`}/> : null}
+              {askedQuestions && askedQuestions?.length ? <DataCard type="Questions" number={askedQuestions?.length} p={`p-6`}/> :null}
+                {polls && polls?.length ? <DataCard type="Votes" number={polls?.length} p={`p-7`}/> : null}
                 
             </View>
             <View style={tailwind("mt-14")}>
@@ -136,10 +136,11 @@ const LawyerDashboardScreen = ({navigation}:any) => {
                 </View>
                 
                     <ScrollView>
-        {questions &&
+        {questions && questions?.length > 0 ?
           questions.slice(0, limit).map((question, i) => (
             <QuestionCard key={i} data={question} navigation={navigation} />
-          ))}
+          )) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
       </ScrollView>
       {questions && questions?.length > limit ? (
         <View style={tailwind("pt-2 flex flex-row justify-center")}>
@@ -161,10 +162,11 @@ const LawyerDashboardScreen = ({navigation}:any) => {
                 </View>
                 
                     <ScrollView>
-        {votes &&
+        {votes && votes?.length > 0 ?
           votes?.slice(0, votelimit).map((vote, i) => (
             <DashboardVotesCard key={i} data={vote}/>
-          ))}
+          )) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
       </ScrollView>
                       {votes && votes?.length > votelimit ? (
         <View style={tailwind("pt-2 flex flex-row justify-center")}>

@@ -107,19 +107,15 @@ const AdminDashboardScreen = () => {
       <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
         {allUsers && allUsers?.length ? (
           <DataCard type="Total users" number={allUsers?.length} p={`p-6`} />
-        ) : (
-          <DataCard type="Total users" number={0} p={`p-6`} />
-        )}
+        ) : 
+          null
+        }
         {analysts && analysts?.length ? (
           <DataCard type="Analysts" number={analysts?.length} p={`p-6`} />
-        ) : (
-          <DataCard type="Analysts" number={0} p={`p-6`} />
-        )}
+        ) : null}
         {lawyers && lawyers?.length ? (
           <DataCard type="Lawyers" number={lawyers?.length} p={`p-6`} />
-        ) : (
-          <DataCard type="Lawyers" number={0} p={`p-6`} />
-        )}
+        ) : null}
       </View>
       <View style={tailwind("mt-14")}>
         <View>
@@ -128,10 +124,11 @@ const AdminDashboardScreen = () => {
         </View>
 
         <ScrollView>
-          {approvedLawyers &&
+          {approvedLawyers && approvedLawyers?.length > 0 ?
             approvedLawyers
               .slice(0, limit)
-              .map((lawyer) => <LawyerCard key={lawyer.id} data={lawyer} />)}
+              .map((lawyer) => <LawyerCard key={lawyer.id} data={lawyer} />) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
         </ScrollView>
         {approvedLawyers && approvedLawyers?.length > limit ? (
           <View style={tailwind("pt-2 flex flex-row justify-center")}>
@@ -164,10 +161,11 @@ const AdminDashboardScreen = () => {
         </View>
 
         <ScrollView>
-          {notApprovedLawyers &&
+          {notApprovedLawyers && notApprovedLawyers?.length > 0 ?
             notApprovedLawyers.map((lawyer) => (
               <LawyerCard key={lawyer.id} data={lawyer} />
-            ))}
+            )) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
         </ScrollView>
       </View>
     </View>

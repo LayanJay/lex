@@ -59,9 +59,9 @@ const AnalystDashboardScreen = () => {
         <View style={tailwind("p-4")}>
            <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role as string}/>
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
-              {polls && polls?.length ? <DataCard type="Polls created" number={polls?.length} p={`p-5`} /> : <DataCard type="Polls created" number={0} p={`p-5`} />}
-              {activePolls && activePolls?.length ? <DataCard type="Active Polls" number={activePolls?.length} p={`p-5`}/> : <DataCard type="Active Polls" number={0} p={`p-5`}/>}
-                {inActivePolls && inActivePolls?.length ? <DataCard type="Inactive Polls" number={inActivePolls?.length} p={`p-5`}/> : <DataCard type="Inactive Polls" number={0} p={`p-5`}/>}
+              {polls && polls?.length > 0 ? <DataCard type="Polls created" number={polls?.length} p={`p-5`} /> : null}
+              {activePolls && activePolls?.length > 0 ? <DataCard type="Active Polls" number={activePolls?.length} p={`p-5`}/> : null}
+                {inActivePolls && inActivePolls?.length > 0 ? <DataCard type="Inactive Polls" number={inActivePolls?.length} p={`p-5`}/> : null}
             </View>
             <View style={tailwind("mt-14")}>
                 <View>
@@ -69,10 +69,11 @@ const AnalystDashboardScreen = () => {
                 </View>
                 
                     <ScrollView>
-        {polls &&
+        {polls && polls?.length > 0 ?
           polls.filter((poll) => dayjs(poll?.endsOn.toDate()).isSameOrBefore(dayjs())).slice(0, limit).map((poll, i) => (
             <DashboardVotesCard key={i} data={poll} />
-          ))}
+          )): <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
       </ScrollView>
       {polls && polls?.length > limit ? (
         <View style={tailwind("pt-2 flex flex-row justify-center")}>
@@ -94,10 +95,11 @@ const AnalystDashboardScreen = () => {
                 </View>
                 
                     <ScrollView>
-        {polls &&
+        {polls && polls?.length > 0 ?
           polls.filter((poll) => dayjs(poll?.endsOn.toDate()).isAfter(dayjs())).slice(0, inactiveLimit).map((poll, i) => (
             <DashboardVotesCard key={i} data={poll} />
-          ))}
+          )) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View> }
       </ScrollView>
                 {polls && polls?.length > limit ? (
         <View style={tailwind("pt-2 flex flex-row justify-center")}>
