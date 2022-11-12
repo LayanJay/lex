@@ -24,7 +24,7 @@ const AdminDashboardScreen = () => {
   const [analysts, setAnalysts] = useState<any[]>();
   const [lawyers, setLawyers] = useState<any[]>();
   const [limit, setLimit] = useState<number>(3);
-  const user = useAuth((state) => state.user)
+  const user = useAuth((state) => state.user);
 
   useEffect(() => {
     //get approved lawyers
@@ -107,9 +107,7 @@ const AdminDashboardScreen = () => {
       <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
         {allUsers && allUsers?.length ? (
           <DataCard type="Total users" number={allUsers?.length} p={`p-6`} />
-        ) : 
-          null
-        }
+        ) : null}
         {analysts && analysts?.length ? (
           <DataCard type="Analysts" number={analysts?.length} p={`p-6`} />
         ) : null}
@@ -124,11 +122,19 @@ const AdminDashboardScreen = () => {
         </View>
 
         <ScrollView>
-          {approvedLawyers && approvedLawyers?.length > 0 ?
+          {approvedLawyers && approvedLawyers?.length > 0 ? (
             approvedLawyers
               .slice(0, limit)
-              .map((lawyer) => <LawyerCard key={lawyer.id} data={lawyer} />) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
-            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
+              .map((lawyer) => <LawyerCard key={lawyer.id} data={lawyer} />)
+          ) : (
+            <View
+              style={tailwind(
+                "mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center"
+              )}
+            >
+              <Text style={tailwind("w-3/4")}>Nothing here yet..</Text>
+            </View>
+          )}
         </ScrollView>
         {approvedLawyers && approvedLawyers?.length > limit ? (
           <View style={tailwind("pt-2 flex flex-row justify-center")}>
@@ -161,11 +167,19 @@ const AdminDashboardScreen = () => {
         </View>
 
         <ScrollView>
-          {notApprovedLawyers && notApprovedLawyers?.length > 0 ?
+          {notApprovedLawyers && notApprovedLawyers?.length > 0 ? (
             notApprovedLawyers.map((lawyer) => (
               <LawyerCard key={lawyer.id} data={lawyer} />
-            )) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
-            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
+            ))
+          ) : (
+            <View
+              style={tailwind(
+                "mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center"
+              )}
+            >
+              <Text style={tailwind("w-3/4")}>Nothing here yet..</Text>
+            </View>
+          )}
         </ScrollView>
       </View>
     </View>
