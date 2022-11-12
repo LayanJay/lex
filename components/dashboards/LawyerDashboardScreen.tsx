@@ -131,17 +131,17 @@ const LawyerDashboardScreen = ({ navigation }: any) => {
       <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
         {answers && answers?.length ? (
           <DataCard type="Answers" number={answers?.length} p={`p-6`} />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
         {askedQuestions && askedQuestions?.length ? (
           <DataCard
             type="Questions"
             number={askedQuestions?.length}
             p={`p-6`}
           />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
         {polls && polls?.length ? (
           <DataCard type="Votes" number={polls?.length} p={`p-7`} />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
       </View>
       <View style={tailwind("mt-14")}>
         <View>

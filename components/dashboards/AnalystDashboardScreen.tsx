@@ -76,21 +76,21 @@ const AnalystDashboardScreen = () => {
       <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
         {polls && polls?.length > 0 ? (
           <DataCard type="Polls created" number={polls?.length} p={`p-5`} />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
         {activePolls && activePolls?.length > 0 ? (
           <DataCard
             type="Active Polls"
             number={activePolls?.length}
             p={`p-5`}
           />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
         {inActivePolls && inActivePolls?.length > 0 ? (
           <DataCard
             type="Inactive Polls"
             number={inActivePolls?.length}
             p={`p-5`}
           />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
       </View>
       <View style={tailwind("mt-14")}>
         <View>

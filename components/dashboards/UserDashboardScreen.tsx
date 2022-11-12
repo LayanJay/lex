@@ -81,21 +81,21 @@ const UserDashboardScreen = ({ navigation }: any) => {
       <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
         {questions && questions?.length ? (
           <DataCard type="Questions" number={questions?.length} p={`p-6`} />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
         {answeredQuestions && answeredQuestions?.length ? (
           <DataCard
             type="Answered"
             number={answeredQuestions?.length}
             p={`p-6`}
           />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
         {unansweredQuestions && unansweredQuestions?.length ? (
           <DataCard
             type="Unanswered"
             number={unansweredQuestions?.length}
             p={`p-6`}
           />
-        ) : null}
+        ) : <DataCard type="Total users" number={0} p={`p-6`} />}
       </View>
       <View style={tailwind("mt-14")}>
         <View>
