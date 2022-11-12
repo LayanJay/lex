@@ -57,7 +57,7 @@ const AnalystDashboardScreen = () => {
 
     return (
         <View style={tailwind("p-4")}>
-           <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role}/>
+           <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role as string}/>
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
               {polls && polls?.length ? <DataCard type="Polls created" number={polls?.length} p={`p-5`} /> : <DataCard type="Polls created" number={0} p={`p-5`} />}
               {activePolls && activePolls?.length ? <DataCard type="Active Polls" number={activePolls?.length} p={`p-5`}/> : <DataCard type="Active Polls" number={0} p={`p-5`}/>}

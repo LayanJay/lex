@@ -15,6 +15,7 @@ import PollConfirmModal from "../components/PollCreateConfirmModal";
 import PollErrorModal from "../components/PollErrorModal";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import withProtected from "../hooks/auth/withProtected";
 
 const CreatePollScreen = ({ navigation, route }: any) => {
   const tailwind = useTailwind();
@@ -101,7 +102,7 @@ const CreatePollScreen = ({ navigation, route }: any) => {
 
   return (
     <ScrollView style={tailwind("p-4")}>
-      <Text style={tailwind("text-4xl font-primary-600 mt-4")}>
+      <Text style={tailwind("font-primary-600 text-4xl font-primary-600 mt-4")}>
         Create a poll
       </Text>
 
@@ -214,4 +215,4 @@ const CreatePollScreen = ({ navigation, route }: any) => {
   );
 };
 
-export default CreatePollScreen;
+export default withProtected(CreatePollScreen);

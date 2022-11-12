@@ -12,6 +12,7 @@ import { useTailwind } from "tailwind-rn";
 import { db } from "../firebaseConfig";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import withProtected from "../hooks/auth/withProtected";
 dayjs.extend(relativeTime);
 
 const ListPollsScreen = ({ navigation }: any) => {
@@ -122,4 +123,4 @@ const ListPollsScreen = ({ navigation }: any) => {
   );
 };
 
-export default ListPollsScreen;
+export default withProtected(ListPollsScreen);

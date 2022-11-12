@@ -13,7 +13,7 @@ import { async } from "@firebase/util";
 import DashboardVotesCard from "../DashboardVotesCard";
 import { useAuth } from "../../store";
 
-const LawyerDashboardScreen = () => {
+const LawyerDashboardScreen = ({navigation}:any) => {
     const [answers, setAnswers] = useState<any[]>();
     const [questions, setQuestions] = useState<any[]>();
     const [askedQuestions, setAskedQuestions] = useState<QuestionType[]>();
@@ -122,7 +122,7 @@ const LawyerDashboardScreen = () => {
 
     return (
         <View style={tailwind("p-4")}>
-             <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role} />
+             <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role as string} />
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
               {answers && answers?.length ? <DataCard type="Answers" number={answers?.length} p={`p-6`}/> : <DataCard type="Answers" number={0} p={`p-6`}/>}
               {askedQuestions && askedQuestions?.length ? <DataCard type="Questions" number={askedQuestions?.length} p={`p-6`}/> : <DataCard type="Questions" number={0} p={`p-6`}/>}
@@ -138,7 +138,7 @@ const LawyerDashboardScreen = () => {
                     <ScrollView>
         {questions &&
           questions.slice(0, limit).map((question, i) => (
-            <DashboardQuestionCard key={i} data={question} />
+            <QuestionCard key={i} data={question} navigation={navigation} />
           ))}
       </ScrollView>
       {questions && questions?.length > limit ? (

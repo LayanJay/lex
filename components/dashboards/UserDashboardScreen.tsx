@@ -11,7 +11,7 @@ import DashboardInfo from "../DashboardInfo";
 import DashboardQuestionCard from "../DashboardQuestionCard";
 import { useAuth } from "../../store";
 
-const UserDashboardScreen = () => {
+const UserDashboardScreen = ({navigation}:any) => {
     const [answeredQuestions, setAnsweredQuestions] = useState<QuestionType[]>();
      const [unansweredQuestions, setUnAnsweredQuestions] = useState<QuestionType[]>();
     const [questions, setQuestions] = useState<QuestionType[]>();
@@ -59,7 +59,7 @@ const UserDashboardScreen = () => {
 
     return (
         <View style={tailwind("p-4")}>
-            <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role} />
+            <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role as string} />
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
                 {questions && questions?.length ?  <DataCard type="Questions" number={questions?.length} p={`p-6`}/> : <DataCard type="Questions" number={0} p={`p-6`}/>}
                {answeredQuestions && answeredQuestions?.length ? <DataCard type="Answered" number={answeredQuestions?.length} p={`p-6`}/> : <DataCard type="Answered" number={0} p={`p-6`}/>}
@@ -74,7 +74,7 @@ const UserDashboardScreen = () => {
                     <ScrollView>
         {questions &&
           questions.slice(0, limit).map((question) => (
-            <DashboardQuestionCard key={question.id} data={question} />
+            <QuestionCard key={question.id} data={question} navigation={navigation}/>
           ))}
       </ScrollView>
       {questions && questions?.length > limit ? (

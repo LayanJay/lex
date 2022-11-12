@@ -7,6 +7,7 @@ import AdminDashboardScreen from '../components/dashboards/AdminDashboardScreen'
 import AnalystDashboardScreen from '../components/dashboards/AnalystDashboardScreen'
 import LawyerDashboardScreen from '../components/dashboards/LawyerDashboardScreen'
 import UserDashboardScreen from '../components/dashboards/UserDashboardScreen'
+import withProtected from '../hooks/auth/withProtected'
 import { useAuth } from '../store'
 
 type Props = {}
@@ -27,4 +28,4 @@ const DashboardScreen = (props: Props) => {
    )
 }
 
-export default DashboardScreen
+export default withProtected(DashboardScreen);
