@@ -13,13 +13,20 @@ import { useTailwind } from "tailwind-rn";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import PollConfirmModal from "../components/PollCreateConfirmModal";
 import PollErrorModal from "../components/PollErrorModal";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { useAuth } from "../store";
 
 const CreatePollScreen = ({ navigation, route }: any) => {
   const tailwind = useTailwind();
 
-  const TEMP_USER_ID = "7JwLj0rwO1uIkBg5lBZi";
+  const { user } = useAuth();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -74,18 +81,20 @@ const CreatePollScreen = ({ navigation, route }: any) => {
     let id = ref.id;
 
     const data = {
-      createdBy: TEMP_USER_ID,
+      createdBy: user?.uid,
       description: description,
       endsOn: date,
       id: id,
       topic: title,
+      createdAt: serverTimestamp(),
     };
 
     await setDoc(ref, data);
 
     // add poll
 
-    answers.forEach(async (answer) => {
+    let answersProm = answers.map(async (answer) => {
+      if (answer.answer.length == 0) return;
       let optionsRef = doc(collection(db, "poll-options"));
       let optionsId = optionsRef.id;
 
@@ -95,7 +104,11 @@ const CreatePollScreen = ({ navigation, route }: any) => {
         value: answer.answer,
       };
 
-      await setDoc(optionsRef, dataOptions);
+      return await setDoc(optionsRef, dataOptions);
+    });
+
+    Promise.all(answersProm).then(() => {
+      navigation.goBack();
     });
   };
 

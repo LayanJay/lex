@@ -7,20 +7,33 @@ import {
   where,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  SectionList,
+} from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { db } from "../firebaseConfig";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from "../store";
 dayjs.extend(relativeTime);
 
 const ListPollsScreen = ({ navigation }: any) => {
+  const { user } = useAuth();
+  console.log(user);
+
   const Item = ({ item }: any) => (
     <View style={tailwind("w-full flex flex-row bg-gray-200 rounded-md mb-4")}>
       <View style={tailwind("px-2 py-2 flex justify-center")}>
         <View
           style={tailwind(
-            "w-8 flex items-center justify-center bg-gray-300 py-1 rounded-sm"
+            "w-8 flex items-center justify-center bg-gray-300 py-1 rounded-md"
           )}
         >
           <Text>{item.count}</Text>
@@ -76,48 +89,63 @@ const ListPollsScreen = ({ navigation }: any) => {
         };
       });
 
-      Promise.all(data2).then((dd) => {
-        setData(dd);
+      Promise.all(data2).then((dd: any) => {
+        const fml = [
+          {
+            title: "Ongoing Polls",
+            data: dd.filter((poll: any) =>
+              dayjs().isBefore(dayjs(poll.endsOn.toDate()))
+            ),
+          },
+          {
+            title: "Ended Polls",
+            data: dd.filter((poll: any) =>
+              dayjs().isAfter(dayjs(poll.endsOn.toDate()))
+            ),
+          },
+        ];
+
+        console.log(fml);
+        setData(fml);
         setRefreshing(false);
       });
     });
   };
 
   return (
-    <View style={tailwind("p-4")}>
-      <Text
-        style={tailwind("py-4 font-primary-600 text-xl")}
-        onPress={() => navigation.navigate("Create Poll")}
-      >
-        Ongoing polls
-      </Text>
-
-      <FlatList
-        data={data.filter((poll) =>
-          dayjs().isBefore(dayjs(poll.endsOn.toDate()))
-        )}
-        renderItem={Item}
-        onRefresh={getData}
-        refreshing={refreshing}
-        keyExtractor={(item) => item.id}
-      />
-
-      <Text
-        style={tailwind("py-4 font-primary-600 text-xl")}
-        onPress={() => navigation.navigate("Create Poll")}
-      >
-        Ended Polls
-      </Text>
-
-      <FlatList
-        data={data.filter((poll) =>
-          dayjs().isAfter(dayjs(poll.endsOn.toDate()))
-        )}
-        renderItem={Item}
-        onRefresh={getData}
-        refreshing={refreshing}
-        keyExtractor={(item) => item.id}
-      />
+    <View style={tailwind("p-4 h-full relative")}>
+      <View>
+        <SectionList
+          sections={[...data]}
+          onRefresh={getData}
+          refreshing={refreshing}
+          keyExtractor={(item, index) => item + index}
+          renderItem={Item}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={tailwind("py-4 font-primary-600 text-xl")}>
+              {title}
+            </Text>
+          )}
+        />
+      </View>
+      {/* @ts-ignore */}
+      {user && user.role == "analyst" && (
+        <View style={tailwind("absolute bottom-0 right-0 mx-3 my-3 z-20")}>
+          <Pressable
+            onPress={() => navigation.navigate("Create Poll")}
+            style={tailwind(
+              "bg-black p-4 rounded-full flex items-center justify-center"
+            )}
+          >
+            <Ionicons
+              style={tailwind("pl-1")}
+              name="add-outline"
+              size={44}
+              color="white"
+            />
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };
