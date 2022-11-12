@@ -1,16 +1,16 @@
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '../../firebaseConfig'
 
 export const getUserById = async (id: string) => {
   try {
-    const ref = doc(db, "user", id);
-    const snap = await getDoc(ref);
-    let data: any = null;
+    const ref = doc(db, 'users', id)
+    const snap = await getDoc(ref)
+    let data: any = null
     if (snap.exists()) {
-      data = { id: snap.id, ...snap.data() };
+      data = { id: snap.id, ...snap.data() }
     }
-    return data;
+    return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
