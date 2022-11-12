@@ -24,7 +24,6 @@ import { useAuth } from "../store";
 dayjs.extend(relativeTime);
 
 const ViewPollScreen = ({ navigation, route }: any) => {
-  // TODO: Replace with actual ID
   const { user } = useAuth();
 
   const tailwind = useTailwind();
