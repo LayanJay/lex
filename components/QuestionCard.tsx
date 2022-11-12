@@ -7,6 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import React, { useEffect, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigator/RootNavigator";
+import { useAuth } from "../store";
 
 dayjs.extend(relativeTime);
 
@@ -20,17 +21,16 @@ type Props = {
   navigation: QuestionScreenNavigationProp;
 };
 
-//TODO: Replace with actual user data
-const user = "7JwLj0rwO1uIkBg5lBZi";
-const userName = "Saul GoodMan";
-
 const QuestionCard = ({ data, navigation }: Props) => {
   const tailwind = useTailwind();
+  const { user } = useAuth();
+  console.log(user);
+
   const { id, title, createdAt, upvotes } = data;
   const [voted, setVoted] = useState<boolean>();
   useEffect(() => {
     if (upvotes) {
-      setVoted(upvotes.includes(user));
+      setVoted(upvotes.includes(user?.uid as string));
     }
   }, [upvotes]);
   return (
@@ -46,6 +46,7 @@ const QuestionCard = ({ data, navigation }: Props) => {
         <AntDesign name={voted ? "like1" : "like2"} size={20} color="black" />
         <Text style={tailwind("text-xs pt-1")}> {upvotes.length}</Text>
       </View>
+
       <Text style={tailwind("w-3/4 px-2")}>{title}</Text>
       {createdAt && (
         <Text style={tailwind(" text-xs")}>

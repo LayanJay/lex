@@ -7,10 +7,7 @@ import { useTailwind } from "tailwind-rn/dist";
 import Input from "../components/Input";
 import { createQuestion } from "../lib/mutations/questions";
 import { RootStackParamList } from "../navigator/RootNavigator";
-
-//TODO: Replace with actual user data
-const user = "7JwLj0rwO1uIkBg5lBZi";
-const userName = "Saul GoodMan";
+import { useAuth } from "../store";
 
 type AddQuestionScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -22,6 +19,7 @@ type Props = {
 
 const AddQuestionScreen = ({ navigation }: Props) => {
   const tailwind = useTailwind();
+  const { user } = useAuth();
   const {
     control,
     reset,
@@ -38,7 +36,7 @@ const AddQuestionScreen = ({ navigation }: Props) => {
       title: data.title,
       question: data.description,
       upvotes: [],
-      createdBy: user,
+      createdBy: user?.uid as string,
       createdAt: serverTimestamp(),
       isAnswered: false,
     };
