@@ -4,17 +4,12 @@ import { getPolls } from "../lib/queries/polls";
 import { PollType } from "../types";
 import PollCard from "./PollCard";
 import GestureRecognizer from "react-native-swipe-gestures";
-
-const PollSection = ({ navigation }: any) => {
-  const [polls, setPolls] = useState<PollType[]>();
+type Props = {
+  navigation: any;
+  polls: PollType[] | [];
+};
+const PollSection = ({ navigation, polls }: Props) => {
   const [index, setIndex] = useState<number>(0);
-  useEffect(() => {
-    const getPollDetails = async () => {
-      const data = await getPolls();
-      setPolls(data.slice(0, 10));
-    };
-    getPollDetails();
-  }, []);
 
   const handleSwipeLeft = () => {
     if (polls) {
