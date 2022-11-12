@@ -20,6 +20,7 @@ import {
 import { db } from "../firebaseConfig";
 import { getUserById } from "../lib/queries/user";
 import { User } from "firebase/auth";
+import withProtected from "../hooks/auth/withProtected";
 dayjs.extend(relativeTime);
 
 const ViewPollScreen = ({ navigation, route }: any) => {
@@ -208,4 +209,4 @@ const ViewPollScreen = ({ navigation, route }: any) => {
   );
 };
 
-export default ViewPollScreen;
+export default withProtected(ViewPollScreen);

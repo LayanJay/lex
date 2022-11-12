@@ -42,13 +42,13 @@ const HomeScreen = ({ navigation }: any) => {
         source={require('../assets/home-banner.png')}
       />
       <View style={tailwind('py-3')}>
-        <Text style={tailwind('text-lg')}>Recent Polls</Text>
+        <Text style={tailwind('font-primary-600 text-lg')}>Recent Polls</Text>
         <View style={tailwind('pt-3')}>
           <PollSection navigation={navigation} />
         </View>
       </View>
       <View style={tailwind('py-2')}>
-        <Text style={tailwind('text-lg')}>Recent Questions</Text>
+        <Text style={tailwind('font-primary-600 text-lg')}>Recent Questions</Text>
         <View style={tailwind('py-3')}>
           {questions &&
             questions.length > 0 &&
@@ -65,7 +65,6 @@ const HomeScreen = ({ navigation }: any) => {
       </View>
 
       {/* TODO: remove this button later */}
-      <Button text='Sign Up' onPress={() => navigation.navigate('Sign Up')} />
       <View style={{ height: 40 }} />
     </ScrollView>
   )

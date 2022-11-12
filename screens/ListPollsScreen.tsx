@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../store";
+import withProtected from "../hooks/auth/withProtected";
 dayjs.extend(relativeTime);
 
 const ListPollsScreen = ({ navigation }: any) => {
@@ -150,4 +151,4 @@ const ListPollsScreen = ({ navigation }: any) => {
   );
 };
 
-export default ListPollsScreen;
+export default withProtected(ListPollsScreen);

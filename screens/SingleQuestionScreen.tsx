@@ -28,6 +28,7 @@ import {
 } from "../lib/mutations/questions";
 import dayjs from "dayjs";
 import { useAuth } from "../store";
+import withProtected from "../hooks/auth/withProtected";
 
 type QuestionScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -124,7 +125,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
     <View style={tailwind("p-4 flex")}>
       {!deleteLoading ? (
         <View>
-          <Text style={tailwind("text-2xl font-semibold")}>
+          <Text style={tailwind("font-primary-600 text-2xl font-semibold")}>
             {question?.title}
           </Text>
           <View style={tailwind("flex flex-row justify-between w-full")}>
@@ -200,7 +201,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
             )}
           </View>
           <View style={tailwind("h-96 pt-2")}>
-            <Text style={tailwind("text-lg")}>Answers</Text>
+            <Text style={tailwind("font-primary-600 text-lg")}>Answers</Text>
             <ScrollView style={tailwind("pt-1 h-full")}>
               {answers && answers.length > 0 ? (
                 answers
@@ -264,4 +265,4 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
   );
 };
 
-export default SingleQuestionScreen;
+export default withProtected(SingleQuestionScreen);

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { View, Text, Pressable } from "react-native";
 import { useTailwind } from "tailwind-rn/dist";
 import Input from "../components/Input";
+import withProtected from "../hooks/auth/withProtected";
 import { createQuestion } from "../lib/mutations/questions";
 import { RootStackParamList } from "../navigator/RootNavigator";
 import { useAuth } from "../store";
@@ -46,7 +47,7 @@ const AddQuestionScreen = ({ navigation }: Props) => {
   };
   return (
     <View style={tailwind("pt-4 px-4 h-full")}>
-      <Text style={tailwind("text-2xl font-semibold pb-3")}>
+      <Text style={tailwind("font-primary-600 text-2xl font-semibold pb-3")}>
         Ask A Question
       </Text>
       <Text style={tailwind("text-grey-main pb-2")}>
@@ -99,4 +100,4 @@ const AddQuestionScreen = ({ navigation }: Props) => {
   );
 };
 
-export default AddQuestionScreen;
+export default withProtected(AddQuestionScreen);

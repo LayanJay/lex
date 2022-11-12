@@ -10,6 +10,7 @@ import { RootStackParamList } from "../navigator/RootNavigator";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import dayjs from "dayjs";
+import withProtected from "../hooks/auth/withProtected";
 
 type QuestionScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -38,7 +39,7 @@ const AllQuestionsScreen = ({ navigation }: Props) => {
 
   return (
     <View style={tailwind("p-4 h-full relative")}>
-      <Text style={tailwind("text-lg pb-3")}>Recents Questions</Text>
+      <Text style={tailwind("font-primary-600 text-lg pb-3")}>Recents Questions</Text>
       <ScrollView>
         {questions && questions.length > 0 ? (
           questions
@@ -83,4 +84,4 @@ const AllQuestionsScreen = ({ navigation }: Props) => {
   );
 };
 
-export default AllQuestionsScreen;
+export default withProtected(AllQuestionsScreen);

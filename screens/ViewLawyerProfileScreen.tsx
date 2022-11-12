@@ -9,6 +9,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import withProtected from "../hooks/auth/withProtected";
 
 type Props = {
     lawyerId: string;
@@ -73,4 +74,4 @@ const ViewLawyerProfileScreen = ({lawyerId}: Props) => {
   }
 }
 
-export default ViewLawyerProfileScreen
+export default withProtected(ViewLawyerProfileScreen);

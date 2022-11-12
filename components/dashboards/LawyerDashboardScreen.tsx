@@ -1,30 +1,33 @@
 import { ScrollView, Text, View } from "react-native";
 import React from "react";
 import { useTailwind } from "tailwind-rn/dist";
-import DataCard from "../components/DataCard";
+import DataCard from "../DataCard";
 import { useEffect, useState } from "react";
 import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from "firebase/firestore";
-import { db } from "../firebaseConfig";
-import { QuestionType } from "../types";
-import QuestionCard from "../components/QuestionCard";
-import DashboardInfo from "../components/DashboardInfo";
-import DashboardQuestionCard from "../components/DashboardQuestionCard";
+import { db } from "../../firebaseConfig";
+import { QuestionType } from "../../types";
+import QuestionCard from "../QuestionCard";
+import DashboardInfo from "../DashboardInfo";
+import DashboardQuestionCard from "../DashboardQuestionCard";
 import { async } from "@firebase/util";
-import DashboardVotesCard from "../components/DashboardVotesCard";
+import DashboardVotesCard from "../DashboardVotesCard";
+import { useAuth } from "../../store";
 
-const LawyerDashboardScreen = () => {
+const LawyerDashboardScreen = ({navigation}:any) => {
     const [answers, setAnswers] = useState<any[]>();
     const [questions, setQuestions] = useState<any[]>();
+    const [askedQuestions, setAskedQuestions] = useState<QuestionType[]>();
     const [limit, setLimit] = useState<number>(3);
     const [votelimit, setVoteLimit] = useState<number>(3);
     const [polls, setPolls] = useState<any[]>();
     const [votes, setVotes] = useState<any[]>();
+    const user = useAuth((state) => state.user)
 
 
     useEffect(() => {
     const getAnswers = async () => {
     const ref = collection(db, "answers");
-    const q = query(ref, where("createdBy", "==", "7JwLj0rwO1uIkBg5lBZi"))
+    const q = query(ref, where("createdBy", "==", `${user?.uid}`))
     let data: any[] = [];
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
@@ -34,6 +37,21 @@ const LawyerDashboardScreen = () => {
       console.log('ansss', answers);
     }
     getAnswers()
+  }, []);
+
+  useEffect(() => {
+    const getAskedQuestions = async () => {
+    const ref = collection(db, "questions");
+    const q = query(ref, where("createdBy", "==", `${user?.uid}`))
+    let data: any[] = [];
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() });
+      });
+      setAskedQuestions(data);
+      console.log('ansss', answers);
+    }
+    getAskedQuestions()
   }, []);
 
   useEffect(() => {
@@ -62,7 +80,7 @@ const LawyerDashboardScreen = () => {
   useEffect(() => {
     const getPollData = async () => {
       const ref = collection(db, "poll-responses");
-    const q = query(ref, where("userId", "==", "7JwLj0rwO1uIkBg5lBZi"))
+    const q = query(ref, where("userId", "==", `${user?.uid}`))
     let data: any[] = [];
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
@@ -104,11 +122,12 @@ const LawyerDashboardScreen = () => {
 
     return (
         <View style={tailwind("p-4")}>
-             <DashboardInfo firstname="Saul" lastname="Goodman" role="Lawyer"/>
+             <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role as string} />
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
               {answers && answers?.length ? <DataCard type="Answers" number={answers?.length} p={`p-6`}/> : <DataCard type="Answers" number={0} p={`p-6`}/>}
+              {askedQuestions && askedQuestions?.length ? <DataCard type="Questions" number={askedQuestions?.length} p={`p-6`}/> : <DataCard type="Questions" number={0} p={`p-6`}/>}
                 {polls && polls?.length ? <DataCard type="Votes" number={polls?.length} p={`p-7`}/> : <DataCard type="Votes" number={0} p={`p-7`}/>}
-                <DataCard type="Visits" number={23} p={`p-7`}/>
+                
             </View>
             <View style={tailwind("mt-14")}>
                 <View>
@@ -119,7 +138,7 @@ const LawyerDashboardScreen = () => {
                     <ScrollView>
         {questions &&
           questions.slice(0, limit).map((question, i) => (
-            <DashboardQuestionCard key={i} data={question} />
+            <QuestionCard key={i} data={question} navigation={navigation} />
           ))}
       </ScrollView>
       {questions && questions?.length > limit ? (
