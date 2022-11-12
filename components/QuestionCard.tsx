@@ -24,7 +24,6 @@ type Props = {
 const QuestionCard = ({ data, navigation }: Props) => {
   const tailwind = useTailwind();
   const { user } = useAuth();
-  console.log(user);
 
   const { id, title, createdAt, upvotes } = data;
   const [voted, setVoted] = useState<boolean>();
