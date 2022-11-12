@@ -18,6 +18,8 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { getUserById } from "../lib/queries/user";
+import { User } from "firebase/auth";
 dayjs.extend(relativeTime);
 
 const ViewPollScreen = ({ navigation, route }: any) => {
@@ -31,9 +33,11 @@ const ViewPollScreen = ({ navigation, route }: any) => {
   const [responses, setResponses] = useState<any[]>([]);
   const [voted, setVoted] = useState(false);
   const [stats, setStats] = useState<any>({});
+  const [author, setAuthor] = useState<any[]>();
 
   useEffect(() => {
     getOptions();
+    getAuthor();
     getResponses();
   }, []);
 
@@ -41,6 +45,13 @@ const ViewPollScreen = ({ navigation, route }: any) => {
     console.log(responses?.length, options?.length);
     if (responses?.length > 0 && options?.length > 0) calculateStats();
   }, [options, responses]);
+
+  const getAuthor = async () => {
+    let u = await getUserById(item.createdBy);
+    setAuthor(u);
+
+    console.log(u);
+  };
 
   const calculateStats = () => {
     console.log("Update");
@@ -105,16 +116,21 @@ const ViewPollScreen = ({ navigation, route }: any) => {
 
       <Text style={tailwind("mt-4")}>{item.description}</Text>
 
-      <View
-        style={tailwind(
-          "w-full mt-6 flex flex-row items-center justify-between "
-        )}
-      >
-        <Text style={tailwind("font-primary-600")}>By Username</Text>
-        <Text style={tailwind("font-primary-600")}>{`Ends ${dayjs(
-          item.endsOn.toDate()
-        ).fromNow()}`}</Text>
-      </View>
+      {author && (
+        <View
+          style={tailwind(
+            "w-full mt-6 flex flex-row items-center justify-between "
+          )}
+        >
+          <Text style={tailwind("font-primary-600")}>
+            {/* @ts-ignore */}
+            By {author.firstname} {author.lastname}
+          </Text>
+          <Text style={tailwind("font-primary-600")}>{`Ends ${dayjs(
+            item.endsOn.toDate()
+          ).fromNow()}`}</Text>
+        </View>
+      )}
 
       <Text style={tailwind("text-xl mt-12 font-primary-600")}>
         {dayjs().isAfter(dayjs(item.endsOn.toDate()))
