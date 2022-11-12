@@ -61,9 +61,9 @@ const UserDashboardScreen = ({navigation}:any) => {
         <View style={tailwind("p-4")}>
             <DashboardInfo firstname={user?.displayName?.split(' ')[0]} lastname={user?.displayName?.split(' ')[1]} role={user?.role as string} />
             <View style={tailwind("mt-10 flex flex-row justify-evenly")}>
-                {questions && questions?.length ?  <DataCard type="Questions" number={questions?.length} p={`p-6`}/> : <DataCard type="Questions" number={0} p={`p-6`}/>}
-               {answeredQuestions && answeredQuestions?.length ? <DataCard type="Answered" number={answeredQuestions?.length} p={`p-6`}/> : <DataCard type="Answered" number={0} p={`p-6`}/>}
-                {unansweredQuestions && unansweredQuestions?.length ?  <DataCard type="Unanswered" number={unansweredQuestions?.length} p={`p-6`}/> :  <DataCard type="Unanswered" number={0} p={`p-6`}/>}
+                {questions && questions?.length ?  <DataCard type="Questions" number={questions?.length} p={`p-6`}/> : null}
+               {answeredQuestions && answeredQuestions?.length ? <DataCard type="Answered" number={answeredQuestions?.length} p={`p-6`}/> : null}
+                {unansweredQuestions && unansweredQuestions?.length ?  <DataCard type="Unanswered" number={unansweredQuestions?.length} p={`p-6`}/> :  null}
                
             </View>
             <View style={tailwind("mt-14")}>
@@ -72,10 +72,11 @@ const UserDashboardScreen = ({navigation}:any) => {
                 </View>
                 
                     <ScrollView>
-        {questions &&
+        {questions && questions?.length > 0 ?
           questions.slice(0, limit).map((question) => (
             <QuestionCard key={question.id} data={question} navigation={navigation}/>
-          ))}
+          )) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
       </ScrollView>
       {questions && questions?.length > limit ? (
         <View style={tailwind("pt-2 flex flex-row justify-center")}>
