@@ -7,15 +7,17 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTailwind } from 'tailwind-rn/dist'
 import Logo from '../assets/logo.png'
 import Input from '../components/Input'
 import { useAuth } from '../store'
 import { useForm } from 'react-hook-form'
 import Button from '../components/Button'
+import AuthErrorModal from '../components/AuthErrorModal'
 
 const SignUp = ({ navigation }: any) => {
+  const [error, setError] = useState<string | boolean>(false)
   const tailwind = useTailwind()
   const signUp = useAuth(s => s.signUp)
   const {
@@ -36,8 +38,8 @@ const SignUp = ({ navigation }: any) => {
   const onSubmit = handleSubmit(async data => {
     try {
       await signUp(data).then(() => navigation.navigate('Main'))
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      setError(error.code as string)
     }
   })
   return (
@@ -179,6 +181,11 @@ const SignUp = ({ navigation }: any) => {
           </View>
         </View>
       </TouchableWithoutFeedback>
+      <AuthErrorModal
+        text={error as string}
+        visible={!!error}
+        onClose={setError}
+      />
     </ScrollView>
   )
 }
