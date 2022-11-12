@@ -15,11 +15,12 @@ import PollConfirmModal from "../components/PollCreateConfirmModal";
 import PollErrorModal from "../components/PollErrorModal";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { useAuth } from "../store";
 
 const CreatePollScreen = ({ navigation, route }: any) => {
   const tailwind = useTailwind();
 
-  const TEMP_USER_ID = "7JwLj0rwO1uIkBg5lBZi";
+  const { user } = useAuth();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -74,7 +75,7 @@ const CreatePollScreen = ({ navigation, route }: any) => {
     let id = ref.id;
 
     const data = {
-      createdBy: TEMP_USER_ID,
+      createdBy: user?.uid,
       description: description,
       endsOn: date,
       id: id,

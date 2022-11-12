@@ -128,21 +128,24 @@ const ListPollsScreen = ({ navigation }: any) => {
           )}
         />
       </View>
-      <View style={tailwind("absolute bottom-0 right-0 mx-3 my-3 z-20")}>
-        <Pressable
-          onPress={() => navigation.navigate("Create Poll")}
-          style={tailwind(
-            "bg-black p-4 rounded-full flex items-center justify-center"
-          )}
-        >
-          <Ionicons
-            style={tailwind("pl-1")}
-            name="add-outline"
-            size={44}
-            color="white"
-          />
-        </Pressable>
-      </View>
+      {/* @ts-ignore */}
+      {user && user.role == "analyst" && (
+        <View style={tailwind("absolute bottom-0 right-0 mx-3 my-3 z-20")}>
+          <Pressable
+            onPress={() => navigation.navigate("Create Poll")}
+            style={tailwind(
+              "bg-black p-4 rounded-full flex items-center justify-center"
+            )}
+          >
+            <Ionicons
+              style={tailwind("pl-1")}
+              name="add-outline"
+              size={44}
+              color="white"
+            />
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };
