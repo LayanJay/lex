@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { getPolls } from "../lib/queries/polls";
 import { PollType } from "../types";
 import PollCard from "./PollCard";
 import GestureRecognizer from "react-native-swipe-gestures";
+import { useTailwind } from "tailwind-rn/dist";
 
 const PollSection = ({ navigation }: any) => {
+  const tailwind = useTailwind()
   const [polls, setPolls] = useState<PollType[]>();
   const [index, setIndex] = useState<number>(0);
   useEffect(() => {
@@ -39,7 +41,7 @@ const PollSection = ({ navigation }: any) => {
 
   return (
     <View>
-      {polls && polls.length > 0 && (
+      {polls && polls.length > 0 ? (
         <GestureRecognizer
           onSwipeLeft={handleSwipeLeft}
           onSwipeRight={handleSwipeRight}
@@ -48,7 +50,8 @@ const PollSection = ({ navigation }: any) => {
             <PollCard key={poll.id} data={poll} navigation={navigation} />
           ))}
         </GestureRecognizer>
-      )}
+      ) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
     </View>
   );
 };

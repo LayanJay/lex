@@ -51,7 +51,7 @@ const HomeScreen = ({ navigation }: any) => {
         <Text style={tailwind('font-primary-600 text-lg')}>Recent Questions</Text>
         <View style={tailwind('py-3')}>
           {questions &&
-            questions.length > 0 &&
+            questions.length > 0 ?
             questions
               .slice(0, 5)
               .map((question: QuestionType) => (
@@ -60,7 +60,8 @@ const HomeScreen = ({ navigation }: any) => {
                   data={question}
                   navigation={navigation}
                 />
-              ))}
+              )) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
+            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
         </View>
       </View>
 
