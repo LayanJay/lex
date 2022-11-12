@@ -34,7 +34,7 @@ const SignUpAnalyst = ({ navigation }: any) => {
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await signUp(data).then(() => navigation.navigate('Home'))
+      await signUp(data).then(() => navigation.navigate('Main'))
     } catch (error) {
       console.log(error)
     }
