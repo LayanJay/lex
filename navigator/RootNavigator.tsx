@@ -10,6 +10,7 @@ import SingleQuestionScreen from "../screens/SingleQuestionScreen";
 import SignUp from "../screens/SignUp";
 import SignUpLawyer from "../screens/SignUpLawyer";
 import SignUpAnalyst from "../screens/SignUpAnalyst";
+import HomeScreen from "../screens/HomeScreen";
 
 export type RootStackParamList = {
   Main: undefined;
@@ -34,7 +35,7 @@ const RootStack = createNativeStackNavigator();
 
 const RootNavigator = () => {
   return (
-    <RootStack.Navigator>
+    <RootStack.Navigator initialRouteName="Sign In">
       <RootStack.Group>
         <RootStack.Screen name="Main" component={TabNavigator} />
         <RootStack.Screen
@@ -53,22 +54,35 @@ const RootNavigator = () => {
           options={{ title: "Forum" }}
         />
         <RootStack.Screen name="AllQuestions" component={AllQuestionsScreen} />
+
         <RootStack.Screen
           name="SingleQuestion"
           component={SingleQuestionScreen}
           options={{ title: "Forum" }}
         />
-        <RootStack.Screen name="Sign In" component={SignIn} />
-        <RootStack.Screen name="Sign Up" component={SignUp} />
+        <RootStack.Screen
+          name="Sign In"
+          component={SignIn}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <RootStack.Screen
+          name="Sign Up"
+          component={SignUp}
+          options={{
+            headerShown: false,
+          }}
+        />
         <RootStack.Screen
           name="SignUpLawyer"
           component={SignUpLawyer}
-          options={{ title: "Sign Up as a Lawyer" }}
+          options={{ title: "Sign Up as a Lawyer", headerShown: false }}
         />
         <RootStack.Screen
           name="SignUpAnalyst"
           component={SignUpAnalyst}
-          options={{ title: "Sign Up as an Analyst" }}
+          options={{ title: "Sign Up as an Analyst", headerShown: false }}
         />
       </RootStack.Group>
     </RootStack.Navigator>
