@@ -43,7 +43,7 @@ const AddQuestionScreen = ({ navigation }: Props) => {
     };
     reset();
     await createQuestion(question);
-    navigation.navigate("AllQuestions");
+    navigation.goBack();
   };
   return (
     <View style={tailwind("pt-4 px-4 h-full")}>
