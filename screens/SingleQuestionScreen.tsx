@@ -118,7 +118,7 @@ const SingleQuestionScreen = ({ route, navigation }: Props) => {
   const handleDeleteQuestion = async (id: string) => {
     setDeleteLoading(true);
     await deleteQuestion(id);
-    navigation.navigate("AllQuestions");
+    navigation.goBack();
   };
 
   return (
