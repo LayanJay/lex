@@ -1,12 +1,13 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { useTailwind } from 'tailwind-rn/dist'
+import shallow from 'zustand/shallow'
 import { useAuth } from '../../store/index'
 
 const withProtected = (Component: any) => {
   const WithProtected = (props: any) => {
     const tailwind = useTailwind()
-    const [user, loading] = useAuth(s => [s.user, s.loading])
+    const [user, loading] = useAuth(s => [s.user, s.loading], shallow)
 
     if (!loading && !user) {
       props.navigation.navigate('Sign In')
