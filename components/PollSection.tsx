@@ -51,7 +51,7 @@ const PollSection = ({ navigation, polls }: Props) => {
             "mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center"
           )}
         >
-          <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text>
+          <Text style={tailwind("w-3/4")}>Nothing here yet..</Text>
         </View>
       )}
     </View>
