@@ -7,10 +7,10 @@ import GestureRecognizer from "react-native-swipe-gestures";
 import { useTailwind } from "tailwind-rn/dist";
 type Props = {
   navigation: any;
-  const tailwind = useTailwind()
   polls: PollType[] | [];
 };
 const PollSection = ({ navigation, polls }: Props) => {
+  const tailwind = useTailwind();
   const [index, setIndex] = useState<number>(0);
 
   const handleSwipeLeft = () => {
@@ -45,8 +45,15 @@ const PollSection = ({ navigation, polls }: Props) => {
             <PollCard key={poll.id} data={poll} navigation={navigation} />
           ))}
         </GestureRecognizer>
-      ) : <View style={tailwind("mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center")}>
-            <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text></View>}
+      ) : (
+        <View
+          style={tailwind(
+            "mb-2 bg-grey-lighter py-3 px-4 flex flex-row justify-around items-center"
+          )}
+        >
+          <Text style={tailwind("w-3/4")}>Nothing hear yet..</Text>
+        </View>
+      )}
     </View>
   );
 };
